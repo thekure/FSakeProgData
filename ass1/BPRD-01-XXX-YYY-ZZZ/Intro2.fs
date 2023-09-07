@@ -18,7 +18,6 @@ let rec lookup env x =
 
 let cvalue = lookup env "c";;
 
-
 (* Object language expressions with variables *)
 
 type expr = 
@@ -27,15 +26,9 @@ type expr =
   | Prim of string * expr * expr
   | If of expr * expr * expr
 
-
-
-
 let e1 = CstI 17;;
-
 let e2 = Prim("+", CstI 3, Var "a");;
-
 let e3 = Prim("+", Prim("*", Var "b", CstI 9), Var "a");;
-
 
 (* Evaluation within an environment *)
 
@@ -56,7 +49,6 @@ let rec eval e (env : (string * int) list) : int =
           | "==" -> if i1 = i2 then 1 else 0
           | _ -> failwith "unkown primitive"
 
-  
 
 let e1v  = eval e1 env;;
 let e2v1 = eval e2 env;;
@@ -64,16 +56,12 @@ let e2v2 = eval e2 [("a", 314)];;
 let e3v  = eval e3 env;;
 
 let maxExp = Prim ("max", CstI 3, CstI 4)
-eval maxExp env
 let minExp = Prim ("min", CstI 3, CstI 4)
-eval minExp env
 let equalNoExp = Prim ("==", CstI 3, CstI 4)
 let equalYesExp = Prim ("==", CstI 15, CstI 15)
-eval equalNoExp env
-eval equalYesExp env
+
 
 let ifExp = If(Var "l", CstI 11, CstI 22)
-eval ifExp env
 
 
 type aexpr = 
@@ -87,7 +75,6 @@ type aexpr =
 let aexprExp1 = Sub (Var "v", (Add (Var "w", Var "z" )))
 // 2 *  (v - (w + z))
 let aexprExp2 = Mul (CstI 2, (Sub (Var "v", Add(Var "w", Var "z"))))
-
 // x + y + z + v
 let aexprExp3 = Add(Add(Add(Var "x", Var "y"), Var "z"), Var "v")
 
@@ -98,12 +85,6 @@ let rec fmt (e: aexpr) : string =
   | Add (e1 , e2) -> "(" + (fmt e1) + " + " + fmt e2 + ")"
   | Mul (e1 , e2) -> "(" + (fmt e1) + " * " + fmt e2 + ")"
   | Sub (e1 , e2) -> "(" + (fmt e1) + " - " + fmt e2 + ")"
-
-fmt (Sub(Var "x", Mul (CstI 34, Var "y")))
-fmt (Sub(Var "x", Var "y"))
-fmt aexprExp1
-fmt aexprExp2
-fmt aexprExp3
 
 
 let rec simplify (e: aexpr) : aexpr = 
@@ -127,14 +108,6 @@ let rec simplify (e: aexpr) : aexpr =
 
 let simplifyThis = Add (Var "x", CstI 0)
 let simplifyThis2 = Mul (Add (CstI 1, CstI 0), Add (Var "x", CstI 0))
-//2 * (x + 4)
-
-simplify simplifyThis
-simplify simplifyThis2
-simplify (Mul (CstI 1, Var "x"))
-
-simplify (Add (CstI 1, CstI 0))
-simplify (Add (Var "x", CstI 0))
 
 
 //Write an F# function to perform symbolic differentiation of simple arithmetic expressions (such as aexpr) with respect to a single variable.
@@ -148,19 +121,3 @@ let rec symDiff (e: aexpr) (variable: string) : aexpr =
   | Sub (e1, e2) -> Sub ((symDiff e1 variable), (symDiff e2 variable))
   | Mul (e1, e2) -> Add (Mul((symDiff e1 variable), e2), Mul(e1, (symDiff e2 variable)))
   
-// (3* (x*2) ) + y
-let a = Add (Mul (CstI 3, Mul (Var "x", CstI 2)), Var "y")
-
-// 3 * (x*x) + y
-let b = Add (Mul (CstI 3, Mul (Var "x", Var "x")), Var "y")
-
-// 3 * (x*(x*x)) + x
-let c = Add (Mul (CstI 3, Mul (Var "x", Mul (Var "x", Var "x"))), Var "x")
-
-let variable = "x"
-
-symDiff a variable
-simplify (symDiff a variable)
-fmt (simplify (symDiff b variable))
-fmt (simplify (symDiff c variable))
-
