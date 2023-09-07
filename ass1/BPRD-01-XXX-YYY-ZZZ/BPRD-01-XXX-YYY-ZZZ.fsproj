@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net6.0</TargetFramework>
+    <RootNamespace>BPRD_01_XXX_YYY_ZZZ</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="Intcomp1.fs" />
+    <Compile Include="Intro2.fs" />
+  </ItemGroup>
+
+</Project>
