@@ -1,4 +1,5 @@
-﻿(* Programming language concepts for software developers, 2010-08-28 *)
+﻿
+(* Programming language concepts for software developers, 2010-08-28 *)
 
 (* Evaluating simple expressions with variables *)
 
@@ -6,7 +7,7 @@ module Intro2
 
 (* Association lists map object language variables to their values *)
 
-let env = [("a", 3); ("c", 78); ("baf", 666); ("b", 111)];;
+let env = [("a", 3); ("c", 78); ("baf", 666); ("b", 111); ("l", 0)];;
 
 let emptyenv = []; (* the empty environment *)
 
@@ -19,12 +20,15 @@ let cvalue = lookup env "c";;
 
 
 (* Object language expressions with variables *)
-// EXTENDED
+
 type expr = 
   | CstI of int
   | Var of string
   | Prim of string * expr * expr
-  | If of expr * expr * expr;;
+  | If of expr * expr * expr
+
+
+
 
 let e1 = CstI 17;;
 
@@ -32,129 +36,131 @@ let e2 = Prim("+", CstI 3, Var "a");;
 
 let e3 = Prim("+", Prim("*", Var "b", CstI 9), Var "a");;
 
-// OUR OWN CODE
-let e4 = Prim("max", CstI 3, CstI 4);;
-let e5 = Prim("min", CstI 3, CstI 4);;
-let e6 = Prim("==", CstI 3, CstI 3);;
-let e7 = Prim("==", CstI 3, CstI 4);;
-
-let e8 = If(Var "a", CstI 11, CstI 22);;
-let e81 = If(CstI 0, CstI 11, CstI 22);;
 
 (* Evaluation within an environment *)
-// EXTENDED
+
 let rec eval e (env : (string * int) list) : int =
     match e with
     | CstI i            -> i
     | Var x             -> lookup env x 
-    | Prim("+", e1, e2) -> eval e1 env + eval e2 env
-    | Prim("*", e1, e2) -> eval e1 env * eval e2 env
-    | Prim("-", e1, e2) -> eval e1 env - eval e2 env
-    | Prim("max", e1, e2) -> let e1' = eval e1 env
-                             let e2' = eval e2 env
-                             if e1' > e2' then e1' else e2'
-    | Prim("min", e1, e2) -> let e1' = eval e1 env
-                             let e2' = eval e2 env
-                             if e1' < e2' then e1' else e2'
-    | Prim("==", e1, e2) -> let e1' = eval e1 env
-                            let e2' = eval e2 env
-                            if e1' = e2' then 1 else 0
-    | Prim _            -> failwith "unknown primitive"
-    | If(e1, e2, e3) -> if eval e1 env <> 0 then eval e2 env else eval e3 env;;
+    | If (e1, e2, e3) -> if (eval e1 env) <> 0  then (eval e2 env) else (eval e3 env) //bound to == which seems weird
+    | Prim (ope, e1, e2) -> 
+          let i1 = eval e1 env
+          let i2 = eval e2 env
+          match ope with
+          | "+" -> i1 + i2
+          | "-" -> i1 - i2
+          | "*" -> i1 * i2
+          | "max" -> max i1 i2
+          | "min" -> min i1 i2
+          | "==" -> if i1 = i2 then 1 else 0
+          | _ -> failwith "unkown primitive"
+
+  
 
 let e1v  = eval e1 env;;
 let e2v1 = eval e2 env;;
 let e2v2 = eval e2 [("a", 314)];;
 let e3v  = eval e3 env;;
 
-let e4v = eval e4 env;;
-let e5v = eval e5 env;;
-let e6v = eval e6 env;;
-let e7v = eval e7 env;;
+let maxExp = Prim ("max", CstI 3, CstI 4)
+eval maxExp env
+let minExp = Prim ("min", CstI 3, CstI 4)
+eval minExp env
+let equalNoExp = Prim ("==", CstI 3, CstI 4)
+let equalYesExp = Prim ("==", CstI 15, CstI 15)
+eval equalNoExp env
+eval equalYesExp env
 
-// OUR REWRITTEN eval FUNCTION
-let rec eval2 e (env : (string * int) list) : int =
-    match e with
-    | CstI i            -> i
-    | Var x             -> lookup env x 
-    | Prim(ope, e1, e2) -> let e1' = eval e1 env
-                           let e2' = eval e2 env
-                           match ope with
-                           | "+" -> e1' + e2'
-                           | "*" -> e1' * e2'
-                           | "-" -> e1' - e2'
-                           | "max" -> if e1' > e2' then e1' else e2'
-                           | "min" -> if e1' < e2' then e1' else e2'
-                           | "==" -> if e1' = e2' then 1 else 0
-                           | _ -> failwith "unknown primitive";;
+let ifExp = If(Var "l", CstI 11, CstI 22)
+eval ifExp env
 
-// TEST FOR eval2
-let e21v  = eval2 e1 env;;
-let e22v1 = eval2 e2 env;;
-let e22v2 = eval2 e2 [("a", 314)];;
-let e23v  = eval2 e3 env;;
 
-let e24v = eval2 e4 env;;
-let e25v = eval2 e5 env;;
-let e26v = eval2 e6 env;;
-let e27v = eval2 e7 env;;
-
-// TEST FOR If(_,_,_)
-let e8v = eval e8 env;;
-
-// EXERCISE 1.2 (OUR OWN CODE)
 type aexpr = 
   | CstI of int
   | Var of string
   | Add of aexpr * aexpr
   | Mul of aexpr * aexpr
-  | Sub of aexpr * aexpr;;
+  | Sub of aexpr * aexpr
 
-let ae1 = Sub(Var "v", Add(Var "w", Var "z"));;
-let ae2 = Mul(CstI 2, ae1);;
-let ae3 = Add(Add(Add(Var "x", Var "y"), Var "z"), Var "v");;
+//Expression 1 :  v - (w + z) 
+let aexprExp1 = Sub (Var "v", (Add (Var "w", Var "z" )))
+// 2 *  (v - (w + z))
+let aexprExp2 = Mul (CstI 2, (Sub (Var "v", Add(Var "w", Var "z"))))
 
-let rec fmt (ae : aexpr) : string =
-    match ae with
-    | CstI x -> string x
-    | Var s -> s
-    | Add(ae1, ae2) -> "(" + fmt ae1 + " + " + fmt ae2 + ")"
-    | Mul(ae1, ae2) -> "(" + fmt ae1 + " * " + fmt ae2 + ")"
-    | Sub(ae1, ae2) -> "(" + fmt ae1 + " - " + fmt ae2 + ")";;
+// x + y + z + v
+let aexprExp3 = Add(Add(Add(Var "x", Var "y"), Var "z"), Var "v")
 
-let ae1v = fmt ae1;;
-let ae2v = fmt ae2;;
-let ae3v = fmt ae3;;
+let rec fmt (e: aexpr) : string = 
+  match e with
+  | CstI n -> string n 
+  | Var s -> s
+  | Add (e1 , e2) -> "(" + (fmt e1) + " + " + fmt e2 + ")"
+  | Mul (e1 , e2) -> "(" + (fmt e1) + " * " + fmt e2 + ")"
+  | Sub (e1 , e2) -> "(" + (fmt e1) + " - " + fmt e2 + ")"
 
-let rec simplify (ae : aexpr) : aexpr =
-    match ae with
-    | CstI x -> CstI x
-    | Var s -> Var s
-    | Add(ae1, CstI 0) | Mul(ae1, CstI 1) | Sub(ae1, CstI 0) -> simplify ae1
-    | Add(CstI 0, ae2) | Mul(CstI 1, ae2) -> simplify ae2
-    | Mul(CstI 0, _) | Mul(_, CstI 0) -> CstI 0
-    | Sub(ae1 , ae2) when ae1 = ae2 -> CstI 0
-    | Add(ae1, ae2) when (ae1 <> CstI 0) || (ae2 <> CstI 0) -> Add(simplify ae1, simplify ae2)
-    | Mul(ae1, ae2) when (ae1 <> CstI 1) || (ae2 <> CstI 1) || (ae1 <> CstI 0) || (ae2 <> CstI 0) -> Mul(simplify ae1, simplify ae2)
-    | Sub(ae1, ae2) when (ae2 <> CstI 0) -> Mul(simplify ae1, simplify ae2)
-    | Add(ae1, ae2) -> simplify (Add(simplify ae1, simplify ae2))
-    | Mul(ae1, ae2) -> simplify (Mul(simplify ae1, simplify ae2))
-    | Sub(ae1, ae2) -> simplify (Sub(simplify ae1, simplify ae2));;
+fmt (Sub(Var "x", Mul (CstI 34, Var "y")))
+fmt (Sub(Var "x", Var "y"))
+fmt aexprExp1
+fmt aexprExp2
+fmt aexprExp3
 
-let ae4 = Add(Var "x", CstI 0);;
-let ae5 = Add(CstI 1, CstI 0);;
-let ae6 = Mul(ae5, ae4);;
-let ae7 = Add(CstI 1, CstI 1);;
-let ae8 = Mul(CstI 2, CstI 2);;
-let ae9 = Sub(CstI 3, CstI 1);;
-let ae10 = Mul(Add(CstI 2, CstI 0), CstI 2);;
 
-let simpAe4 = simplify ae4;;
-let simpAe5 = simplify ae5;;
-let simpAe6 = simplify ae6;;
-let simpAe7 = simplify ae7;;
-let simpAe8 = simplify ae8;;
-let simpAe9 = simplify ae9;;
-let simpAe10 = simplify ae10;;
+let rec simplify (e: aexpr) : aexpr = 
+  match e with
+  | CstI n -> CstI n 
+  | Var s -> Var s
+  | Add (e1, CstI 0) | Sub (e1 , CstI 0) | Mul(e1, CstI 1)-> simplify e1
+  | Add (CstI 0, e2) | Mul (CstI 1, e2) -> simplify e2
+  | Mul (_, CstI 0) | Mul(CstI 0, _)  -> CstI 0
+  | Sub(e1,e2) when e1 = e2 -> CstI 0
+  //Now check for if we should simplify the root
+  | Add(e1,e2) when simplify e1 = CstI 0 || simplify e2 = CstI 0 -> simplify (Add(simplify e1, simplify e2))
+  | Sub(e1,e2) when simplify e2 = CstI 0 -> simplify (Sub(simplify e1, simplify e2))
+  | Mul(e1, e2) when ((simplify e1 = CstI 1) || (simplify e2 = CstI 1)) || ((simplify e1 = CstI 0) || (simplify e2 = CstI 0)) -> simplify (Mul(simplify e1, simplify e2))
+  //Else just simplyfy content
+  | Add(e1, e2) -> Add (simplify e1, simplify e2)
+  | Mul(e1, e2) -> Mul (simplify e1, simplify e2)
+  | Sub(e1, e2) -> Sub (simplify e1, simplify e2)
 
-// let rec symboDiff (ae : aexpr) : aexpr =
+
+
+let simplifyThis = Add (Var "x", CstI 0)
+let simplifyThis2 = Mul (Add (CstI 1, CstI 0), Add (Var "x", CstI 0))
+//2 * (x + 4)
+
+simplify simplifyThis
+simplify simplifyThis2
+simplify (Mul (CstI 1, Var "x"))
+
+simplify (Add (CstI 1, CstI 0))
+simplify (Add (Var "x", CstI 0))
+
+
+//Write an F# function to perform symbolic differentiation of simple arithmetic expressions (such as aexpr) with respect to a single variable.
+
+let rec symDiff (e: aexpr) (variable: string) : aexpr = 
+  match e with
+  | CstI _ -> CstI 0
+  | Var v when v = variable -> CstI 1
+  | Var _ -> CstI 0
+  | Add (e1, e2) -> Add ((symDiff e1 variable), (symDiff e2 variable))
+  | Sub (e1, e2) -> Sub ((symDiff e1 variable), (symDiff e2 variable))
+  | Mul (e1, e2) -> Add (Mul((symDiff e1 variable), e2), Mul(e1, (symDiff e2 variable)))
+  
+// (3* (x*2) ) + y
+let a = Add (Mul (CstI 3, Mul (Var "x", CstI 2)), Var "y")
+
+// 3 * (x*x) + y
+let b = Add (Mul (CstI 3, Mul (Var "x", Var "x")), Var "y")
+
+// 3 * (x*(x*x)) + x
+let c = Add (Mul (CstI 3, Mul (Var "x", Mul (Var "x", Var "x"))), Var "x")
+
+let variable = "x"
+
+symDiff a variable
+simplify (symDiff a variable)
+fmt (simplify (symDiff b variable))
+fmt (simplify (symDiff c variable))
+
