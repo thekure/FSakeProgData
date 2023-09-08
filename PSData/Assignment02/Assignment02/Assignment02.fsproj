@@ -7,6 +7,8 @@
 
     <ItemGroup>
         <Compile Include="Intcomp1.fs" />
+        <Content Include="Machine.java" />
+        <Content Include="is1.txt" />
     </ItemGroup>
 
 </Project>
