@@ -253,13 +253,13 @@ let intsToFile (inss : int list) (fname : string) =
 *) 
 let seqRec (s : string) : bool =
     let cLst = Array.toList (s.ToCharArray())
-    let rec aux c (acc : char list) =
+    let rec aux c (acc : char) =
       match c with
       | [] -> true
-      | [x] when not acc.IsEmpty -> if x = 'a' && acc.Head = 'a' then false else true
-      | x::xs when not acc.IsEmpty -> if x = 'a' && acc.Head = 'a' then false else aux xs (x::acc)
-      | x::xs -> aux xs (x::acc)
-    aux cLst [];;
+      | [x] when acc = 'a' -> if x = 'a' then false else true
+      | x::xs when acc = 'a' -> if x = 'a' then false else aux xs x
+      | x::xs -> aux xs x
+    aux cLst ' ';;
 
 let strT1 = "b";;
 let strT2 = "a";;
