@@ -200,7 +200,7 @@ type stackvalue =
   | Bound of string;;                   (* A bound variable *)
 
 (* Compilation to a list of instructions for a unified-stack machine *)
-
+// MODIFIED TO ACCOUNT FOR THE MODIFIED expr TYPE (Let)
 let rec scomp (e : expr) (cenv : stackvalue list) : sinstr list =
     match e with
     | CstI i -> [SCstI i]
@@ -224,23 +224,48 @@ let s2 = scomp e2 [];;
 let s3 = scomp e3 [];;
 let s5 = scomp e5 [];;
 
+// NEW
 let assemble (sILst : sinstr list) : int list =
     let rec aux lst acc = 
         match lst with
         | [] -> acc
-        | SCstI x::xs -> aux xs (0::x::acc)
-        | SVar x::xs -> aux xs (1::x::acc)
+        | SCstI x::xs -> aux xs (x::0::acc)
+        | SVar x::xs -> aux xs (x::1::acc)
         | SAdd::xs -> aux xs (2::acc)
         | SSub::xs -> aux xs (3::acc)
         | SMul::xs -> aux xs (4::acc)
         | SPop::xs -> aux xs (5::acc) 
         | SSwap::xs -> aux xs (6::acc)
-    aux sILst [];;
+    List.rev (aux sILst []);;
 
 (* Output the integers in list inss to the text file called fname: *)
-
+// MODIFIED TO CHANGED THE PATH WHERE THE FILE IS SAVED
 let intsToFile (inss : int list) (fname : string) = 
     let text = String.concat " " (List.map string inss)
-    System.IO.File.WriteAllText(fname, text);;
+    System.IO.File.WriteAllText("BPRD-02-bemi-laku-mesv/BPRD-02-bemi-laku-mesv/" + fname, text);;
 
 (* -----------------------------------------------------------------  *)
+
+// PLC 3.2
+(* regex
+    a?b*a?
+    - matches everything except "a" and "b"
+*) 
+let seqRec (s : string) : bool =
+    let cLst = Array.toList (s.ToCharArray())
+    let rec aux c (acc : char list) =
+      match c with
+      | [] -> true
+      | [x] when not acc.IsEmpty -> if x = 'a' && acc.Head = 'a' then false else true
+      | x::xs when not acc.IsEmpty -> if x = 'a' && acc.Head = 'a' then false else aux xs (x::acc)
+      | x::xs -> aux xs (x::acc)
+    aux cLst [];;
+
+let strT1 = "b";;
+let strT2 = "a";;
+let strT3 = "ba";;
+let strT4 = "ababbbaba";;
+let strF1 = "aa";;
+let strF2 = "babaa";;
+
+let sRRes = List.map seqRec [strT1; strT2; strT3; strT4; strF1; strF2];;
