@@ -41,9 +41,12 @@ public class Machine {
         }
       }
       myReader.close();
-      Integer[] iArr = new Integer[iLst.size()];
-      iArr = iLst.toArray(iArr);
-      System.out.println(seval(iArr));
+      // Convert iLst from ArrayList<Integer> to int[]
+      int[] intArr = new int[(new Integer[iLst.size()]).length];
+      for (int i = 0; i < intArr.length; i++) {
+        intArr[i] = iLst.get(i).intValue();
+      }
+      System.out.println(seval(intArr));
     } catch (FileNotFoundException e) {
       System.out.println("File not found");
       e.printStackTrace();
@@ -54,8 +57,8 @@ public class Machine {
 			 SSWAP, SPOP, SVAR, 1, SADD, SSWAP, SPOP };
     System.out.println(seval(rpn2));*/
   }
-  // CHANGED int[] TO Integer[]
-  static int seval(Integer[] code) {
+
+  static int seval(int[] code) {
     int[] stack = new int[1000];	// evaluation and env stack
     int sp = -1;			// pointer to current stack top
 

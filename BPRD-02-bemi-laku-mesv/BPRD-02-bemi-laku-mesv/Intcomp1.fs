@@ -6,6 +6,7 @@
 (* Object language expressions with variable bindings and nested scope *)
 // I HAVE DELETED A LOT OF FUNCTIONS WE DIDN'T NEED FOR ASSIGNMENT 1
 module Intcomp1
+open System.Text.RegularExpressions
 // CHANGED
 type expr = 
   | CstI of int
@@ -247,10 +248,9 @@ let intsToFile (inss : int list) (fname : string) =
 (* -----------------------------------------------------------------  *)
 
 // PLC 3.2
-(* regex
-    a?b*a?
-    - matches everything except "a" and "b"
-*) 
+// REGEX PATTERN BELOW
+let pattern = "^(b*(ab)*)*a?$";;
+// RETURNS TRUE IF THE STRING IS LEGAL, FALSE OTHERWISE
 let seqRec (s : string) : bool =
     let cLst = Array.toList (s.ToCharArray())
     let rec aux c (acc : char) =
@@ -261,6 +261,10 @@ let seqRec (s : string) : bool =
       | x::xs -> aux xs x
     aux cLst ' ';;
 
+let seqRec2 p (s : string) : bool =
+    let regex = new Regex(p)
+    regex.IsMatch(s);;
+
 let strT1 = "b";;
 let strT2 = "a";;
 let strT3 = "ba";;
@@ -269,3 +273,4 @@ let strF1 = "aa";;
 let strF2 = "babaa";;
 
 let sRRes = List.map seqRec [strT1; strT2; strT3; strT4; strF1; strF2];;
+let sRRes2 = List.map (seqRec2 pattern) [strT1; strT2; strT3; strT4; strF1; strF2];;
