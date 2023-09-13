@@ -27,35 +27,38 @@ public class Machine {
   
   // MODIFIED TO BE ABLE TO GIVE A String[] AS args IN CMD
   public static void main(String[] args) {
-    try {
-      File myFile = new File(args[0]); //"../../" + args[0] /* <- use this if the path in intsToFile (Intcomp1.fs) is changed to 'fname' */
-      Scanner myReader = new Scanner(myFile);
-      ArrayList<Integer> iLst = new ArrayList<Integer>();
-      while (myReader.hasNextInt()) {
-        String data = myReader.next();
-        try {
-          iLst.add(Integer.parseInt(data));
-        } catch (Exception e) {
-          System.out.println("Can't parse list");
-          e.printStackTrace();
+    if (args.length != 0) {
+      try {
+        File myFile = new File(args[0]); //"../../" + args[0] /* <- use this if the path in intsToFile (Intcomp1.fs) is changed to 'fname' */
+        Scanner myReader = new Scanner(myFile);
+        ArrayList<Integer> iLst = new ArrayList<Integer>();
+        while (myReader.hasNextInt()) {
+          String data = myReader.next();
+          try {
+            iLst.add(Integer.parseInt(data));
+          } catch (Exception e) {
+            System.out.println("Can't parse list");
+            e.printStackTrace();
+          }
         }
+        myReader.close();
+        // Convert iLst from ArrayList<Integer> to int[]
+        int[] intArr = new int[(new Integer[iLst.size()]).length];
+        for (int i = 0; i < intArr.length; i++) {
+          intArr[i] = iLst.get(i).intValue();
+        }
+        System.out.println(seval(intArr));
+      } catch (FileNotFoundException e) {
+        System.out.println("File not found");
+        e.printStackTrace();
       }
-      myReader.close();
-      // Convert iLst from ArrayList<Integer> to int[]
-      int[] intArr = new int[(new Integer[iLst.size()]).length];
-      for (int i = 0; i < intArr.length; i++) {
-        intArr[i] = iLst.get(i).intValue();
-      }
-      System.out.println(seval(intArr));
-    } catch (FileNotFoundException e) {
-      System.out.println("File not found");
-      e.printStackTrace();
+    } else {
+      final int[] rpn1 = { SCST, 17, SVAR, 0, SVAR, 1, SADD, SSWAP, SPOP };
+      System.out.println(seval(rpn1));
+      final int[] rpn2 = { SCST, 17, SCST, 22, SCST, 100, SVAR, 1, SMUL, 
+         SSWAP, SPOP, SVAR, 1, SADD, SSWAP, SPOP };
+      System.out.println(seval(rpn2));
     }
-/*    final int[] rpn1 = { SCST, 17, SVAR, 0, SVAR, 1, SADD, SSWAP, SPOP };
-    System.out.println(seval(rpn1));
-    final int[] rpn2 = { SCST, 17, SCST, 22, SCST, 100, SVAR, 1, SMUL, 
-			 SSWAP, SPOP, SVAR, 1, SADD, SSWAP, SPOP };
-    System.out.println(seval(rpn2));*/
   }
 
   static int seval(int[] code) {
