@@ -9,6 +9,8 @@
         <Compile Include="Intcomp1.fs" />
         <Content Include="Machine.java" />
         <Content Include="is1.txt" />
+        <Compile Include="answers.fs" />
+        <Content Include="README.md" />
     </ItemGroup>
 
 </Project>
