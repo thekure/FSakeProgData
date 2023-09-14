@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.6.33723.286
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "BPRD-02-bemi-laku-mesv", "BPRD-02-bemi-laku-mesv\BPRD-02-bemi-laku-mesv.fsproj", "{378C0B3C-2A9E-48ED-A851-7908096A6364}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{378C0B3C-2A9E-48ED-A851-7908096A6364}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{378C0B3C-2A9E-48ED-A851-7908096A6364}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{378C0B3C-2A9E-48ED-A851-7908096A6364}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{378C0B3C-2A9E-48ED-A851-7908096A6364}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6DDA0C0A-B69A-4CD6-BDAA-BAFD32C263EC}
+	EndGlobalSection
+EndGlobal
