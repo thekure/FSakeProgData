@@ -98,6 +98,24 @@ let z = Expr in Expr end EOF
            Var "x")))
 ```
 
+## 3.6
+
+See `Exercise_3_6.fs`
+
+OBS: For all the files that rely on FSharp.Text.Lexing- or .Parsing, you need this line included in the fsproj file for it to work:
+
+    `<PackageReference Include="FsLexYacc" Version="9.0.2" />`
+
+Nice to know.
+
+## 3.7
+
+See the `Expr` folder. The only edited files are:
+```
+Absyn.fs
+ExprLex.fsl
+ExprPar.fsy
+```
 
 
 

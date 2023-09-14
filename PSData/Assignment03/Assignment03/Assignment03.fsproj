@@ -9,9 +9,20 @@
     <ItemGroup>
       <Content Include="Exercises.md" />
       <Content Include="Commands.md" />
-      <Compile Include="3_6.fs" />
-      <Compile Include="Expr2\test.fs" />
-      <Compile Include="Expr2\Parse.fs" />
+    </ItemGroup>
+    
+    <ItemGroup>
+        <PackageReference Include="FsLexYacc" Version="9.0.2" />
+        <Compile Include="Expr\Absyn.fs" />
+        
+        <Compile Include="Expr\Expr.fs" />
+        <Compile Include="Expr\ExprPar.fs" />
+        <Compile Include="Expr\ExprLex.fs" />
+        <Content Include="Expr\ExprLex.fsl" />
+        <Content Include="Expr\ExprPar.fsy" />
+        <Compile Include="Expr\Parse.fs" />
+        <Compile Include="Exercise_3_6.fs" />
+        <Content Include="README.md" />
     </ItemGroup>
 
 </Project>
