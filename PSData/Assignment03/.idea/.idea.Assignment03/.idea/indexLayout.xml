@@ -2,7 +2,11 @@
 <project version="4">
   <component name="UserContentModel">
     <attachedFolders />
-    <explicitIncludes />
+    <explicitIncludes>
+      <Path>Assignment03/Expr</Path>
+      <Path>Assignment03/Expr/Ex3_6.fs</Path>
+      <Path>Assignment03/Expr/Parse.fs</Path>
+    </explicitIncludes>
     <explicitExcludes />
   </component>
 </project>
