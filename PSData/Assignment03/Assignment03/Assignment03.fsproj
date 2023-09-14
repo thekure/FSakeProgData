@@ -6,4 +6,12 @@
     </PropertyGroup>
 
 
+    <ItemGroup>
+      <Content Include="Exercises.md" />
+      <Content Include="Commands.md" />
+      <Compile Include="3_6.fs" />
+      <Compile Include="Expr2\test.fs" />
+      <Compile Include="Expr2\Parse.fs" />
+    </ItemGroup>
+
 </Project>
