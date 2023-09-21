@@ -46,12 +46,20 @@ RULE E: LET NAME EQ LPAR Expr RPAR IN CSTINT PLUS CSTINT TIMES CSTINT END EOF
 
 RULE C: LET NAME EQ LPAR CSTINT RPAR IN CSTINT PLUS CSTINT TIMES CSTINT END EOF
 
-let z = Expr in Expr end EOF
-
 ```
 
 ## 3.4
-
+```
+    A
+    |
+    F
+   / \
+  E   H
+ /   / \
+C   B   G
+       / \
+      C   C
+```
 ## 3.5
 
 #### Output from fsharpi:
@@ -101,12 +109,6 @@ let z = Expr in Expr end EOF
 ## 3.6
 
 See `Exercise_3_6.fs`
-
-OBS: For all the files that rely on FSharp.Text.Lexing- or .Parsing, you need this line included in the fsproj file for it to work:
-
-    `<PackageReference Include="FsLexYacc" Version="9.0.2" />`
-
-Nice to know.
 
 ## 3.7
 
