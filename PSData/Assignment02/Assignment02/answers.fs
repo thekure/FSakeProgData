@@ -1,5 +1,7 @@
 module Assignment02.answers
 
+open System
+open System.Numerics
 open Intcomp1
 
 let intsToFile (inss : int list) (fname : string) = 
