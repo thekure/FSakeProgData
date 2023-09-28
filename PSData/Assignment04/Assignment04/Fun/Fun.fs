@@ -24,7 +24,7 @@ let rec lookup env x =
 
 type value = 
   | Int of int
-  | Closure of string * string list * expr * value env       (* (f, x, fBody, fDeclEnv) *)
+  | Closure of string * string list * expr * value env       (* edit: from string to string list *)
 
 let rec eval (e : expr) (env : value env) : int =
     match e with 
@@ -52,15 +52,16 @@ let rec eval (e : expr) (env : value env) : int =
       let b = eval e1 env
       if b<>0 then eval e2 env
       else eval e3 env
-    | Letfun(f, pList, fBody, letBody) ->
-      let bodyEnv = (f, Closure(f, pList, fBody, env)) :: env 
-      eval letBody bodyEnv
-    | Call(Var f, eArgs) -> 
-      let fClosure = lookup env f
+    | Letfun(f, pList, fBody, letBody) ->                       // edited these to allow
+      let bodyEnv = (f, Closure(f, pList, fBody, env)) :: env   // multiple parameters
+      eval letBody bodyEnv                                      
+    | Call(Var f, eArgs) ->                                     
+      let fClosure = lookup env f                               
       match fClosure with
-      | Closure (f, pList, fBody, fDeclEnv) ->
-        let pVals = List.fold (fun acc ele -> Int(eval ele env) :: acc) [] eArgs //Int(eval eArgs env)
-        let fBodyEnv = (x, xVal) :: (f, fClosure) :: fDeclEnv
+      | Closure (f, pList, fBody, fDeclEnv) ->                  // from x to pList
+        let pVals = List.fold (fun acc ele -> Int(eval ele env) :: acc) [] eArgs 
+        let combinedList = List.zip pList pVals                 // list of argName-value pairs
+        let fBodyEnv = combinedList @ (f, fClosure) :: fDeclEnv // Append list to env
         eval fBody fBodyEnv
       | _ -> failwith "eval Call: not a function"
     | Call _ -> failwith "eval Call: not first-order function"
@@ -71,7 +72,8 @@ let run e = eval e [];;
 
 (* Examples in abstract syntax *)
 
-let ex1 = Letfun("f1", "x", Prim("+", Var "x", CstI 1), 
+(*
+let ex1 = Letfun("f1", ["x"], Prim("+", Var "x", CstI 1), 
                  Call(Var "f1", CstI 12));;
 
 (* Example: factorial *)
@@ -113,4 +115,5 @@ let ex5 =
                           Call(Var "fib", Prim("-", Var "n", CstI 1)),
                           Call(Var "fib", Prim("-", Var "n", CstI 2))),
                      CstI 1), Call(Var "fib", CstI 25)));;
+                     *)
                      

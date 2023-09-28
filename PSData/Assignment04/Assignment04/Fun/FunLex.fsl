@@ -30,6 +30,8 @@ let keyword s =
     | "not"   -> NOT
     | "then"  -> THEN
     | "true"  -> CSTBOOL true
+    | "&&"    -> AND                        (* added line *)
+    | "||"    -> OR                         (* added line *)
     | _       -> NAME s
 }
 
@@ -42,20 +44,22 @@ rule Token = parse
   | "(*"            { commentStart := lexbuf.StartPos;
                       commentDepth := 1; 
                       SkipComment lexbuf; Token lexbuf }
-  | '='             { EQ }
-  | "<>"            { NE }
-  | '>'             { GT }
-  | '<'             { LT }
-  | ">="            { GE }
-  | "<="            { LE }
-  | '+'             { PLUS }                     
-  | '-'             { MINUS }                     
-  | '*'             { TIMES }                     
-  | '/'             { DIV }                     
-  | '%'             { MOD }
-  | '('             { LPAR }
-  | ')'             { RPAR }
-  | eof             { EOF }
+  | '='             { EQ        }
+  | "<>"            { NE        }
+  | '>'             { GT        }
+  | '<'             { LT        }
+  | ">="            { GE        }
+  | "<="            { LE        }
+  | '+'             { PLUS      }                     
+  | '-'             { MINUS     }                     
+  | '*'             { TIMES     }                     
+  | '/'             { DIV       }                     
+  | '%'             { MOD       }
+  | '('             { LPAR      }
+  | ')'             { RPAR      }
+  | "&&"            { AND       }               (* added line *)
+  | "||"            { OR        }               (* added line *)
+  | eof             { EOF       }
   | _               { failwith "Lexer error: illegal symbol" }
 
 and SkipComment = parse
