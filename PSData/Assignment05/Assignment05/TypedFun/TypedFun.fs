@@ -140,6 +140,16 @@ let rec typ (e : tyexpr) (env : typ env) : typ =
         else failwith "Call: wrong argument type"
       | _ -> failwith "Call: unknown function"
     | Call(_, eArg) -> failwith "Call: illegal function in call"
+    | ListExpr(list, t) ->
+      let rec aux list =
+       match list with
+        | [] -> TypL t
+        | head :: tail ->
+            match typ head [] with
+            | x as t -> aux tail
+            | x      -> failwith "type mismatch"
+      aux list
+          
 
 let typeCheck e = typ e [];;
 
