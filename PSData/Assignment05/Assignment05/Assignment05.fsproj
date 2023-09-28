@@ -1,0 +1,36 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net7.0</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="FsLexYacc" Version="9.0.2" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Include="Fun\Absyn.fs" />
+      <Compile Include="Fun\Fun.fs" />
+      <Compile Include="Fun\FunPar.fsi" />
+      <Compile Include="Fun\FunPar.fs" />
+      <Compile Include="Fun\FunLex.fs" />
+      <Compile Include="Fun\HigherFun.fs" />
+      <Compile Include="Fun\Parse.fs" />
+      <Compile Include="Fun\ParseAndRun.fs" />
+      <Compile Include="Fun\ParseAndRunHigher.fs" />
+      <Compile Include="Fun\TypeInference.fs" />
+      <Compile Include="Fun\ParseAndType.fs" />
+      <None Include="Fun\chap5.fsx" />
+      <None Include="Fun\chap6.fsx" />
+      <None Include="Fun\slowTypeInference.fsx" />
+      <Content Include="Fun\FunLex.fsl" />
+      <Content Include="Fun\FunPar.fsy" />
+      <Content Include="Fun\LinkedList.java" />
+      <Content Include="Fun\README.TXT" />
+      <Content Include="TypedFun\README.TXT" />
+      <Compile Include="TypedFun\TypedFun.fs" />
+      <Content Include="Assignment_5.md" />
+    </ItemGroup>
+
+</Project>
