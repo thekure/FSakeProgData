@@ -16,6 +16,7 @@
 
 %left MINUS PLUS        /* lowest precedence  */
 %left TIMES             /* highest precedence */
+%left IF THEN ELSE      (* Added this line *)
 
 %start Main
 %type <Absyn.expr> Main 
