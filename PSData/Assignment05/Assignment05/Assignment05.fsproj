@@ -30,6 +30,7 @@
       <Content Include="Fun\README.TXT" />
       <Content Include="TypedFun\README.TXT" />
       <Compile Include="TypedFun\TypedFun.fs" />
+      <Content Include="Assignment_5.md" />
     </ItemGroup>
 
 </Project>
