@@ -149,7 +149,7 @@ let rec typ (e : tyexpr) (env : typ env) : typ =
         match input with
         | TypI        -> "int"
         | TypB        -> "bool"
-        | TypF _  -> "func"
+        | TypF _      -> "func"
         | TypL _      -> "list"
         
       let listType = typeAsString t
