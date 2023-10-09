@@ -33,19 +33,42 @@ Then *run the evaluator on the following four programs*. Is the result of the **
 let add x = let f y = x+y in f end
 in add 2 5 end
 
+  > let e1 = run(fromString "let add x = let f y = x + y in f end in add 2 5  end");;
+    val e1 : HigherFun.value = Int 7
+
 let add x = let f y = x+y in f end
 in let addtwo = add 2
    in addtwo 5 end
 end
 
+  > let e2 = run(fromString "let add x = let f y = x+y in f end in let addtwo = add 2 in addtwo 5 end end");;
+    val e2 : HigherFun.value = Int 7
+
+
 let add x = let f y = x+y in f end
 in let addtwo = add 2
-    in let x = 77 in addtwo 5 end
+    in let x = 77 in addtwo 5 end //X is outside? Not tied to anything
     end 
 end
 
+  > let e3 = run(fromString "let add x = let f y = x + y in f end in let addtwo = add 2 in let x = 77 in addtwo 5 end end end");;
+    val e3 : HigherFun.value = Int 7
+
+
 let add x = let f y = x+y in f end
 in add 2 end
+
+  Expecting a function. Got:
+  > let e4 = run(fromString "let add x = let f y = x + y in f end in add 2 end");;
+      val e4 : HigherFun.value =
+          Closure
+            ("f", "y", Prim ("+", Var "x", Var "y"),
+            [("x", Int 2);
+              ("add",
+              Closure
+                ("add", "x", Letfun ("f", "y", Prim ("+", Var "x", Var "y"), Var "f"),
+                  []))])
+  Getting a closure as we are still expecting a second input - that is, what is y? Right now y is a function that still needs an input - thus the instruction is still valid, just not computatable. (??)
 ```
 
 ## 6.2
@@ -69,6 +92,22 @@ In the empty environment the two expressions shown above should evaluate to thes
 `Clos("x", Prim("*", CstI 2, Var "x"), [])`
 `Clos("z", Prim("+", Var "z", Var "y"), [(y,22)])`
 *Extend the evaluator eval in file HigherFun.fs* to interpret such anonymous functions.
+
+> NOTE TO SELF, HAVE THE RIGHT IDEA, BUT IN REV ORDER;
+  NOT GETTING `Fun("x", Prim("*", CstI 2, Var "x"))`
+  BUT         `Prim ("*", Fun ("x", CstI 2), Var "x")`
+  - GOT IT! Needed to change the hierarchy of "ARROW" ;
+  > let e1 = fromString "fun x -> 2 * x";;
+    - val e1 : Absyn.expr = Fun ("x", Prim ("*", CstI 2, Var "x"))
+  > let e2 = fromString "let y = 22 in fun z -> z + y end" ;;
+    - val e2 : Absyn.expr = Let ("y", CstI 22, Fun ("z", Prim ("+", Var "z", Var "y")))
+    
+  Now with parse:
+  > let e1 = run(fromString "fun x -> 2*x");;
+    - val e1 : HigherFun.value = Clos ("x", Prim ("*", CstI 2, Var "x"), [])
+  > let e2 = run(fromString "let y = 22 in fun z -> z+y end");;
+    - val e2 : HigherFun.value = Clos ("z", Prim ("+", Var "z", Var "y"), [("y", Int 22)])
+
 
 
 ## 6.3

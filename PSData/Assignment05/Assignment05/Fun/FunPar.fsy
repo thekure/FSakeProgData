@@ -11,15 +11,15 @@
 %token <string> NAME
 %token <bool> CSTBOOL
 
-%token ELSE END FALSE IF IN LET NOT THEN TRUE
+%token ELSE END FALSE IF IN LET NOT THEN TRUE FUN ARROW // ADDED FUN AND ARROW
 %token PLUS MINUS TIMES DIV MOD
 %token EQ NE GT LT GE LE
 %token LPAR RPAR 
 %token EOF
 
 %left ELSE              /* lowest precedence  */
-%left EQ NE 
-%left GT LT GE LE
+%left EQ NE ARROW                             // ADDED ARROW (Think it needed to be 'lower' than expressions)
+%left GT LT GE LE 
 %left PLUS MINUS
 %left TIMES DIV MOD 
 %nonassoc NOT           /* highest precedence  */
@@ -55,6 +55,7 @@ Expr:
 AtExpr:
     Const                               { $1                     }
   | NAME                                { Var $1                 }
+  | FUN NAME ARROW Expr                 { Fun($2, $4)            } // NEW!!
   | LET NAME EQ Expr IN Expr END        { Let($2, $4, $6)        }
   | LET NAME NAME EQ Expr IN Expr END   { Letfun($2, $3, $5, $7) }
   | LPAR Expr RPAR                      { $2                     }
