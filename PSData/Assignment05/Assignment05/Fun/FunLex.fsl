@@ -44,6 +44,7 @@ rule Token = parse
                       commentDepth := 1; 
                       SkipComment lexbuf; Token lexbuf }
   | '='             { EQ }
+  | "->"            { ARROW } // NEW!
   | "<>"            { NE }
   | '>'             { GT }
   | '<'             { LT }
@@ -56,7 +57,6 @@ rule Token = parse
   | '%'             { MOD }
   | '('             { LPAR }
   | ')'             { RPAR }
-  | "->"            { ARROW }
   | eof             { EOF }
   | _               { failwith "Lexer error: illegal symbol" }
 

@@ -18,7 +18,7 @@
 %token EOF
 
 %left ELSE              /* lowest precedence  */
-%left EQ NE ARROW                             // ADDED ARROW (Think it needed to be 'lower' than expressions)
+%left ARROW EQ NE                              // ADDED ARROW (Think it needed to be 'lower' than expressions)
 %left GT LT GE LE 
 %left PLUS MINUS
 %left TIMES DIV MOD 

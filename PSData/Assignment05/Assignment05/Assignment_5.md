@@ -101,8 +101,8 @@ In the empty environment the two expressions shown above should evaluate to thes
     - val e1 : Absyn.expr = Fun ("x", Prim ("*", CstI 2, Var "x"))
   > let e2 = fromString "let y = 22 in fun z -> z + y end" ;;
     - val e2 : Absyn.expr = Let ("y", CstI 22, Fun ("z", Prim ("+", Var "z", Var "y")))
-    
-  Now with parse:
+
+  Now with eval:
   > let e1 = run(fromString "fun x -> 2*x");;
     - val e1 : HigherFun.value = Clos ("x", Prim ("*", CstI 2, Var "x"), [])
   > let e2 = run(fromString "let y = 22 in fun z -> z+y end");;
@@ -112,12 +112,19 @@ In the empty environment the two expressions shown above should evaluate to thes
 
 ## 6.3
 
-Exercise 6.3 *Extend the micro-ML lexer and parser specifications in **FunLex.fsl** and **FunPar.fsy*** to permit *anonymous functions*. The concrete syntax may be as in F#: `fun x -> expror` as in Standard ML: `fn x => expr`, where x is a variable. The micro-ML examples from Exercise 6.1 can now be written in these two alternative ways:
+Exercise 6.3 *Extend the micro-ML lexer and parser specifications in **FunLex.fsl** and **FunPar.fsy*** to permit *anonymous functions*. The concrete syntax may be as in F#: `fun x -> expr` or as in Standard ML: `fn x => expr`, where x is a variable. The micro-ML examples from Exercise 6.1 can now be written in these two alternative ways:
 let add x = fun y -> x+y
 in add 2 5 end
 
 let add = fun x -> fun y -> x+y
 in add 2 5 end
+
+  > Solution?:
+  1 > let e1 = run(fromString "let add x = fun y -> x + y in add 2 5 end");;
+      - val e1 : HigherFun.value = Int 7
+
+  2 > let e2 = run(fromString "let add = fun x -> fun y -> x+y in add 2 5 end");;
+      - val e2 : HigherFun.value = Int 7
 
 ## 6.4
 

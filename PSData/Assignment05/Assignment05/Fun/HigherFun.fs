@@ -66,6 +66,10 @@ let rec eval (e : expr) (env : value env) : value =
         let xVal = eval eArg env
         let fBodyEnv = (x, xVal) :: (f, fClosure) :: fDeclEnv
         in eval fBody fBodyEnv
+      |Clos (f, exp  , fEnv) ->                               // NEW !!!
+        let xVal = eval eArg env
+        let fBodyEnv = (f,xVal) :: fEnv
+        in eval exp fBodyEnv 
       | _ -> failwith "eval Call: not a function"
     | Fun(f, x) ->                                                        // NEW !!!
       Clos(f, x, env)
