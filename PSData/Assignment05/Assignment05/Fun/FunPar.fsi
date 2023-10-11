@@ -2,10 +2,6 @@
 module FunPar
 type token = 
   | EOF
-  | AND
-  | OR
-  | LBRACK
-  | RBRACK
   | LPAR
   | RPAR
   | EQ
@@ -28,18 +24,11 @@ type token =
   | NOT
   | THEN
   | TRUE
-  | AND
-  | OR
   | CSTBOOL of (bool)
-  | NAMES of (string list)
   | NAME of (string)
   | CSTINT of (int)
 type tokenId = 
     | TOKEN_EOF
-    | TOKEN_AND
-    | TOKEN_OR
-    | TOKEN_LBRACK
-    | TOKEN_RBRACK
     | TOKEN_LPAR
     | TOKEN_RPAR
     | TOKEN_EQ
@@ -62,10 +51,7 @@ type tokenId =
     | TOKEN_NOT
     | TOKEN_THEN
     | TOKEN_TRUE
-    | TOKEN_AND
-    | TOKEN_OR
     | TOKEN_CSTBOOL
-    | TOKEN_NAMES
     | TOKEN_NAME
     | TOKEN_CSTINT
     | TOKEN_end_of_input
@@ -75,11 +61,8 @@ type nonTerminalId =
     | NONTERM_Main
     | NONTERM_Expr
     | NONTERM_AtExpr
-    | NONTERM_Names
     | NONTERM_AppExpr
-    | NONTERM_Args
     | NONTERM_Const
-    | NONTERM_AtExpressions
 /// This function maps tokens to integer indexes
 val tagOfToken: token -> int
 

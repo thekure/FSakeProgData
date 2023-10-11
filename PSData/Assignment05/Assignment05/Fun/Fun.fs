@@ -24,7 +24,7 @@ let rec lookup env x =
 
 type value = 
   | Int of int
-  | Closure of string * string list * expr * value env       (* edit: from string to string list *)
+  | Closure of string * string * expr * value env       (* (f, x, fBody, fDeclEnv) *)
 
 let rec eval (e : expr) (env : value env) : int =
     match e with 
@@ -52,48 +52,47 @@ let rec eval (e : expr) (env : value env) : int =
       let b = eval e1 env
       if b<>0 then eval e2 env
       else eval e3 env
-    | Letfun(f, pList, fBody, letBody) ->                       // edited these to allow
-      let bodyEnv = (f, Closure(f, pList, fBody, env)) :: env   // multiple parameters
-      eval letBody bodyEnv                                      
-    | Call(Var f, eArgs) ->                                     
-      let fClosure = lookup env f                               
+    | Letfun(f, x, fBody, letBody) -> 
+      let bodyEnv = (f, Closure(f, x, fBody, env)) :: env 
+      eval letBody bodyEnv
+    | Call(Var f, eArg) -> 
+      let fClosure = lookup env f
       match fClosure with
-      | Closure (f, pList, fBody, fDeclEnv) ->                  // from x to pList
-        let pVals = List.fold (fun acc ele -> Int(eval ele env) :: acc) [] eArgs 
-        let combinedList = List.zip pList pVals                 // list of argName-value pairs
-        let fBodyEnv = combinedList @ (f, fClosure) :: fDeclEnv // Append list to env
+      | Closure (f, x, fBody, fDeclEnv) ->
+        let xVal = Int(eval eArg env)
+        let fBodyEnv = (x, xVal) :: (f, fClosure) :: fDeclEnv
         eval fBody fBodyEnv
       | _ -> failwith "eval Call: not a function"
     | Call _ -> failwith "eval Call: not first-order function"
+
 (* Evaluate in empty environment: program must have no free variables: *)
 
 let run e = eval e [];;
 
 (* Examples in abstract syntax *)
 
-(*
-let ex1 = Letfun("f1", ["x"], Prim("+", Var "x", CstI 1), 
+let ex1 = Letfun("f1", "x", Prim("+", Var "x", CstI 1), 
                  Call(Var "f1", CstI 12));;
 
 (* Example: factorial *)
 
-let ex2 = Letfun("fac", ["x"],
+let ex2 = Letfun("fac", "x",
                  If(Prim("=", Var "x", CstI 0),
                     CstI 1,
                     Prim("*", Var "x", 
                               Call(Var "fac", 
-                                   [Prim("-", Var "x", CstI 1)]))),
-                 Call(Var "fac", [Var "n"]));;
+                                   Prim("-", Var "x", CstI 1)))),
+                 Call(Var "fac", Var "n"));;
 
 (* let fac10 = eval ex2 [("n", Int 10)];; *)
 
 (* Example: deep recursion to check for constant-space tail recursion *)
 
-let ex3 = Letfun("deep", ["x"], 
+let ex3 = Letfun("deep", "x", 
                  If(Prim("=", Var "x", CstI 0),
                     CstI 1,
-                    Call(Var "deep", [Prim("-", Var "x", CstI 1)])),
-                 Call(Var "deep", [Var "count"]));;
+                    Call(Var "deep", Prim("-", Var "x", CstI 1))),
+                 Call(Var "deep", Var "count"));;
     
 let rundeep n = eval ex3 [("count", Int n)];;
 
@@ -101,18 +100,17 @@ let rundeep n = eval ex3 [("count", Int n)];;
 
 let ex4 =
     Let("y", CstI 11,
-        Letfun("f", ["x"], Prim("+", Var "x", Var "y"),
-               Let("y", CstI 22, Call(Var "f", [CstI 3]))));;
+        Letfun("f", "x", Prim("+", Var "x", Var "y"),
+               Let("y", CstI 22, Call(Var "f", CstI 3))));;
 
 (* Example: two function definitions: a comparison and Fibonacci *)
 
 let ex5 = 
-    Letfun("ge2", ["x"], Prim("<", CstI 1, Var "x"),
-           Letfun("fib", ["n"],
-                  If(Call(Var "ge2", [Var "n"]),
+    Letfun("ge2", "x", Prim("<", CstI 1, Var "x"),
+           Letfun("fib", "n",
+                  If(Call(Var "ge2", Var "n"),
                      Prim("+",
                           Call(Var "fib", Prim("-", Var "n", CstI 1)),
                           Call(Var "fib", Prim("-", Var "n", CstI 2))),
                      CstI 1), Call(Var "fib", CstI 25)));;
-                     *)
                      

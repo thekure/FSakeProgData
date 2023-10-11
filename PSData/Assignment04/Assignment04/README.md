@@ -75,15 +75,17 @@ sum from 1000 .. 1
 
 #### Exercise 4.3 (PLC)
 [//]: #
-    (
-    )
+
+    edited Absyn.fs 
+    edited Fun.fs 
 
 #### Exercise 4.4 (PLC)
 [//]: #
-(
-)
+    
+    edited FunPar.fsy
 
 #### Exercise 4.5 (PLC)
 [//]: #
-(
-)
+
+    edited FunLex.fsl
+    edited FunPar.fsy
