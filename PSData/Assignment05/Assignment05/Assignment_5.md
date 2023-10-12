@@ -127,3 +127,7 @@ We did unfortunately not figure this out in time.
             If-branches have to have the same return value
     5. > inferType (fromString "let f x = let g y = if true then y else x in g false end in f true end");;
             - val it : string = "bool"
+
+### 2: 
+
+We did unfortunately not complete this part of the question.
