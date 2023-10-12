@@ -1,10 +1,13 @@
 
 (* Section 6.2.2 *)
 (* Does not work because we can't generalize type for x as it depends on type of y. *)
-let g y =
-  let f x = x=y
-  f 1 && f false
-g 2
+
+(*
+  let g y =
+    let f x = x=y
+    f 1 && f false
+  g 2
+*)
 
 (* Works *)
 let g y =
@@ -13,7 +16,7 @@ let g y =
 g 2
 
 (* Type Inference *)
-#r "/Users/nielshallenberg/fsharp/FsLexYacc.Runtime.dll"
+#r "/Users/thekure23/bin/fsharp/FsLexYacc.Runtime.dll"
 #load "Absyn.fs"
 #load "FunPar.fs"
 #load "FunLex.fs"

@@ -16,6 +16,10 @@ open FSharp.Text.Parsing.ParseHelpers
 // This type is the type of tokens accepted by the parser
 type token = 
   | EOF
+  | AND
+  | OR
+  | LBRACK
+  | RBRACK
   | LPAR
   | RPAR
   | EQ
@@ -47,6 +51,10 @@ type token =
 // This type is used to give symbolic names to token indexes, useful for error messages
 type tokenId = 
     | TOKEN_EOF
+    | TOKEN_AND
+    | TOKEN_OR
+    | TOKEN_LBRACK
+    | TOKEN_RBRACK
     | TOKEN_LPAR
     | TOKEN_RPAR
     | TOKEN_EQ
@@ -85,6 +93,7 @@ type nonTerminalId =
     | NONTERM_AtExpr
     | NONTERM_Names
     | NONTERM_AppExpr
+    | NONTERM_Args
     | NONTERM_Const
     | NONTERM_AtExpressions
 
@@ -200,6 +209,10 @@ let _fsyacc_tagOfErrorTerminal = 29
 let token_to_string (t:token) = 
   match t with 
   | EOF  -> "EOF" 
+  | AND  -> "AND" 
+  | OR  -> "OR" 
+  | LBRACK  -> "LBRACK" 
+  | RBRACK  -> "RBRACK" 
   | LPAR  -> "LPAR" 
   | RPAR  -> "RPAR" 
   | EQ  -> "EQ" 
@@ -233,6 +246,10 @@ let token_to_string (t:token) =
 let _fsyacc_dataOfToken (t:token) = 
   match t with 
   | EOF  -> (null : System.Object) 
+  | AND  -> (null : System.Object) 
+  | OR  -> (null : System.Object) 
+  | LBRACK  -> (null : System.Object) 
+  | RBRACK  -> (null : System.Object) 
   | LPAR  -> (null : System.Object) 
   | RPAR  -> (null : System.Object) 
   | EQ  -> (null : System.Object) 
@@ -535,6 +552,7 @@ let _fsyacc_reductions ()  =    [|
             let _3 = (let data = parseState.GetInput(3) in (Microsoft.FSharp.Core.Operators.unbox data : string list)) in
             let _5 = (let data = parseState.GetInput(5) in (Microsoft.FSharp.Core.Operators.unbox data : Absyn.expr)) in
             let _7 = (let data = parseState.GetInput(7) in (Microsoft.FSharp.Core.Operators.unbox data : Absyn.expr)) in
+            let _9 = (let data = parseState.GetInput(9) in (Microsoft.FSharp.Core.Operators.unbox data : Absyn.expr)) in
             Microsoft.FSharp.Core.Operators.box
                 (
                    (

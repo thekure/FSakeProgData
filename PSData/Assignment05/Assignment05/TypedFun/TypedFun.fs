@@ -37,7 +37,8 @@ type typ =
   | TypI                                (* int                         *)
   | TypB                                (* bool                        *)
   | TypF of typ * typ                   (* (argumenttype, resulttype)  *)
-  | TypL of typ list                    (* List of type typ            *) // # NEW
+  | TypL of typ                         (* list, element type is typ   *)
+
 
 (* New abstract syntax with explicit types, instead of Absyn.expr: *)
 
@@ -140,11 +141,28 @@ let rec typ (e : tyexpr) (env : typ env) : typ =
         else failwith "Call: wrong argument type"
       | _ -> failwith "Call: unknown function"
     | Call(_, eArg) -> failwith "Call: illegal function in call"
+    | ListExpr(list, t) ->
+      (* 
+        For the life of me I couldn't figure out how to do this comparison in a smart way.
+        This is the result.
+      *)
+      let typeAsString input = 
+        match input with
+        | TypI        -> "int"
+        | TypB        -> "bool"
+        | TypF _      -> "func"
+        | TypL _      -> "list"
+        
+      let listType = typeAsString t
+      let pred (ele: tyexpr) = (typeAsString (typ ele [])).Equals(listType)
+      if List.forall pred list then TypL t else failwith "type mismatch"
+          
 
 let typeCheck e = typ e [];;
 
 
 (* Examples of successful type checking *)
+
 
 let ex1 = Letfun("f1", "x", TypI, Prim("+", Var "x", CstI 1), TypI,
                  Call(Var "f1", CstI 12));;
@@ -160,7 +178,12 @@ let ex2 = Letfun("fac", "x", TypI,
                  TypI,
                  Let("n", CstI 7, Call(Var "fac", Var "n")));;
 
+let ex0 = ListExpr ([ex1; ex2], TypI)
+let ex00 = ListExpr ([ex1; ex2], TypB)
+
 let fac10 = eval ex2 [];;
+
+
 
 let ex3 = Let("b", Prim("=", CstI 1, CstI 2),
               If(Var "b", CstI 3, CstI 4));;

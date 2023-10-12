@@ -29,6 +29,7 @@ let rec lookup env x =
 
 type value = 
   | Int of int
+  | Clos of string * expr * value env
   | Closure of string * string * expr * value env       (* (f, x, fBody, fDeclEnv) *)
   | Clos of string * expr * value env                   // NEW!!!
 

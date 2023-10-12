@@ -18,7 +18,7 @@
 %token LPAR RPAR
 %token EOF
 
-%left ELSE              /* lowest precedence  */
+%left ELSE             /* lowest precedence  */
 %left EQ NE 
 %left GT LT GE LE
 %left PLUS MINUS
