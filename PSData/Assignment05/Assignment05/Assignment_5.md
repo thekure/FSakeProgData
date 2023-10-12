@@ -114,6 +114,7 @@ We did unfortunately not figure this out in time.
 ### 1:
 
 > Answers:
+ 
     1. > inferType (fromString "let f x = 1 in f f end");;
             - val it : string = "int"
     2. > inferType (fromString "let f g = g g in f end");;
