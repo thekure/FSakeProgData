@@ -165,6 +165,19 @@ Download fun2.zip and *build the micro-ML higher-order type inference* as descri
        in g false end
     in f true end
 ```
+  > Answers:
+    1. > inferType (fromString "let f x = 1 in f f end");;
+            - val it : string = "int"
+    2. > inferType (fromString "let f g = g g in f end");;
+            - System.Exception: type error: circularity
+              g is not defined and results in a loop; call f with g -> *call g with g*? 
+    3. > inferType (fromString "let f x = let g y = y in g false end in f 42 end");;
+            - val it : string = "bool"
+    4. > inferType (fromString "let f x = let g y = if true then y else x in g false end in f 42 end");;
+            - System.Exception: type error: bool and int
+            If-branches have to have the same return value
+    5. > inferType (fromString "let f x = let g y = if true then y else x in g false end in f true end");;
+            - val it : string = "bool"
 
 (2) *Write micro-ML programs* for which the micro-ML type inference report the following types:
 • bool -> bool
@@ -172,6 +185,7 @@ Download fun2.zip and *build the micro-ML higher-order type inference* as descri
 • int -> int -> int
 • ’a -> ’b -> ’a
 • ’a -> ’b -> ’b
-• (’a -> ’b) -> (’b -> ’c) -> (’a -> ’c) • ’a -> ’b
+• (’a -> ’b) -> (’b -> ’c) -> (’a -> ’c)
+• ’a -> ’b
 • ’a
-Remember that the type arrow (->) is right associative, so int -> int -> int is the same as int -> (int -> int), and that the choice of type variables does not matter, so the type scheme ’h -> ’g -> ’h is the same asa’ -> ’b -> ’a.
+Remember that the type arrow (->) is right associative, so int -> int -> int is the same as int -> (int -> int), and that the choice of type variables does not matter, so the type scheme ’h -> ’g -> ’h is the same as a’ -> ’b -> ’a.
