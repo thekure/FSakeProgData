@@ -20,7 +20,7 @@
 %left ELSE              /* lowest precedence  */
 %left ARROW EQ NE                              // ADDED ARROW (Think it needed to be 'lower' than expressions)
 %left GT LT GE LE 
-%left PLUS MINUS
+%left PLUS MINUS 
 %left TIMES DIV MOD 
 %nonassoc NOT           /* highest precedence  */
 

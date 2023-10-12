@@ -24,6 +24,8 @@ type typ =
   | TypL of typ              (* list, element type is typ *)
   | ...
 
+  > Line 40 in TypedFun.fs
+
 ## 6.1
 Download and unpack fun1.zip and fun2.zip and *build the micro-ML higher-order evaluator* as described in file README.TXT *point E*.
 Then *run the evaluator on the following four programs*. Is the result of the **third one** as expected? *Explain the result of the last one*:
@@ -46,7 +48,7 @@ end
 
 
 let add x = let f y = x+y in f end
-in let addtwo = add 2
+  in let addtwo = add 2
     in let x = 77 in addtwo 5 end //X is outside? Not tied to anything
     end 
 end
@@ -68,7 +70,7 @@ in add 2 end
               Closure
                 ("add", "x", Letfun ("f", "y", Prim ("+", Var "x", Var "y"), Var "f"),
                   []))])
-  Getting a closure as we are still expecting a second input - that is, what is y? Right now y is a function that still needs an input - thus the instruction is still valid, just not computatable. (??)
+  Getting a closure as we are still expecting a second input - that is, what is y? Right now y is a function that still needs an input - thus the instruction is still valid, just does not evaluate to a numerical result.
 ```
 
 ## 6.2
@@ -108,8 +110,6 @@ In the empty environment the two expressions shown above should evaluate to thes
   > let e2 = run(fromString "let y = 22 in fun z -> z+y end");;
     - val e2 : HigherFun.value = Clos ("z", Prim ("+", Var "z", Var "y"), [("y", Int 22)])
 
-
-
 ## 6.3
 
 Exercise 6.3 *Extend the micro-ML lexer and parser specifications in **FunLex.fsl** and **FunPar.fsy*** to permit *anonymous functions*. The concrete syntax may be as in F#: `fun x -> expr` or as in Standard ML: `fn x => expr`, where x is a variable. The micro-ML examples from Exercise 6.1 can now be written in these two alternative ways:
@@ -119,7 +119,7 @@ in add 2 5 end
 let add = fun x -> fun y -> x+y
 in add 2 5 end
 
-  > Solution?:
+  > Solution:
   1 > let e1 = run(fromString "let add x = fun y -> x + y in add 2 5 end");;
       - val e1 : HigherFun.value = Int 7
 
