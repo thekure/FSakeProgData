@@ -30,6 +30,7 @@ let keyword s =
     | "not"   -> NOT
     | "then"  -> THEN
     | "true"  -> CSTBOOL true
+    | "fun"   -> FUN           // NEW!
     | _       -> NAME s
 }
 
@@ -43,6 +44,7 @@ rule Token = parse
                       commentDepth := 1; 
                       SkipComment lexbuf; Token lexbuf }
   | '='             { EQ }
+  | "->"            { ARROW } // NEW!
   | "<>"            { NE }
   | '>'             { GT }
   | '<'             { LT }

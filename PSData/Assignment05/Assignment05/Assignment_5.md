@@ -24,6 +24,8 @@ type typ =
   | TypL of typ              (* list, element type is typ *)
   | ...
 
+  > Line 40 in TypedFun.fs
+
 ## 6.1
 Download and unpack fun1.zip and fun2.zip and *build the micro-ML higher-order evaluator* as described in file README.TXT *point E*.
 Then *run the evaluator on the following four programs*. Is the result of the **third one** as expected? *Explain the result of the last one*:
@@ -33,19 +35,42 @@ Then *run the evaluator on the following four programs*. Is the result of the **
 let add x = let f y = x+y in f end
 in add 2 5 end
 
+  > let e1 = run(fromString "let add x = let f y = x + y in f end in add 2 5  end");;
+    val e1 : HigherFun.value = Int 7
+
 let add x = let f y = x+y in f end
 in let addtwo = add 2
    in addtwo 5 end
 end
 
+  > let e2 = run(fromString "let add x = let f y = x+y in f end in let addtwo = add 2 in addtwo 5 end end");;
+    val e2 : HigherFun.value = Int 7
+
+
 let add x = let f y = x+y in f end
-in let addtwo = add 2
-    in let x = 77 in addtwo 5 end
+  in let addtwo = add 2
+    in let x = 77 in addtwo 5 end //X is outside? Not tied to anything
     end 
 end
 
+  > let e3 = run(fromString "let add x = let f y = x + y in f end in let addtwo = add 2 in let x = 77 in addtwo 5 end end end");;
+    val e3 : HigherFun.value = Int 7
+
+
 let add x = let f y = x+y in f end
 in add 2 end
+
+  Expecting a function. Got:
+  > let e4 = run(fromString "let add x = let f y = x + y in f end in add 2 end");;
+      val e4 : HigherFun.value =
+          Closure
+            ("f", "y", Prim ("+", Var "x", Var "y"),
+            [("x", Int 2);
+              ("add",
+              Closure
+                ("add", "x", Letfun ("f", "y", Prim ("+", Var "x", Var "y"), Var "f"),
+                  []))])
+  Getting a closure as we are still expecting a second input - that is, what is y? Right now y is a function that still needs an input - thus the instruction is still valid, just does not evaluate to a numerical result.
 ```
 
 ## 6.2
@@ -70,15 +95,36 @@ In the empty environment the two expressions shown above should evaluate to thes
 `Clos("z", Prim("+", Var "z", Var "y"), [(y,22)])`
 *Extend the evaluator eval in file HigherFun.fs* to interpret such anonymous functions.
 
+> NOTE TO SELF, HAVE THE RIGHT IDEA, BUT IN REV ORDER;
+  NOT GETTING `Fun("x", Prim("*", CstI 2, Var "x"))`
+  BUT         `Prim ("*", Fun ("x", CstI 2), Var "x")`
+  - GOT IT! Needed to change the hierarchy of "ARROW" ;
+  > let e1 = fromString "fun x -> 2 * x";;
+    - val e1 : Absyn.expr = Fun ("x", Prim ("*", CstI 2, Var "x"))
+  > let e2 = fromString "let y = 22 in fun z -> z + y end" ;;
+    - val e2 : Absyn.expr = Let ("y", CstI 22, Fun ("z", Prim ("+", Var "z", Var "y")))
+
+  Now with eval:
+  > let e1 = run(fromString "fun x -> 2*x");;
+    - val e1 : HigherFun.value = Clos ("x", Prim ("*", CstI 2, Var "x"), [])
+  > let e2 = run(fromString "let y = 22 in fun z -> z+y end");;
+    - val e2 : HigherFun.value = Clos ("z", Prim ("+", Var "z", Var "y"), [("y", Int 22)])
 
 ## 6.3
 
-Exercise 6.3 *Extend the micro-ML lexer and parser specifications in **FunLex.fsl** and **FunPar.fsy*** to permit *anonymous functions*. The concrete syntax may be as in F#: `fun x -> expror` as in Standard ML: `fn x => expr`, where x is a variable. The micro-ML examples from Exercise 6.1 can now be written in these two alternative ways:
+Exercise 6.3 *Extend the micro-ML lexer and parser specifications in **FunLex.fsl** and **FunPar.fsy*** to permit *anonymous functions*. The concrete syntax may be as in F#: `fun x -> expr` or as in Standard ML: `fn x => expr`, where x is a variable. The micro-ML examples from Exercise 6.1 can now be written in these two alternative ways:
 let add x = fun y -> x+y
 in add 2 5 end
 
 let add = fun x -> fun y -> x+y
 in add 2 5 end
+
+  > Solution:
+  1 > let e1 = run(fromString "let add x = fun y -> x + y in add 2 5 end");;
+      - val e1 : HigherFun.value = Int 7
+
+  2 > let e2 = run(fromString "let add = fun x -> fun y -> x+y in add 2 5 end");;
+      - val e2 : HigherFun.value = Int 7
 
 ## 6.4
 
@@ -119,6 +165,19 @@ Download fun2.zip and *build the micro-ML higher-order type inference* as descri
        in g false end
     in f true end
 ```
+  > Answers:
+    1. > inferType (fromString "let f x = 1 in f f end");;
+            - val it : string = "int"
+    2. > inferType (fromString "let f g = g g in f end");;
+            - System.Exception: type error: circularity
+              g is not defined and results in a loop; call f with g -> *call g with g*? 
+    3. > inferType (fromString "let f x = let g y = y in g false end in f 42 end");;
+            - val it : string = "bool"
+    4. > inferType (fromString "let f x = let g y = if true then y else x in g false end in f 42 end");;
+            - System.Exception: type error: bool and int
+            If-branches have to have the same return value
+    5. > inferType (fromString "let f x = let g y = if true then y else x in g false end in f true end");;
+            - val it : string = "bool"
 
 (2) *Write micro-ML programs* for which the micro-ML type inference report the following types:
 • bool -> bool
@@ -126,6 +185,7 @@ Download fun2.zip and *build the micro-ML higher-order type inference* as descri
 • int -> int -> int
 • ’a -> ’b -> ’a
 • ’a -> ’b -> ’b
-• (’a -> ’b) -> (’b -> ’c) -> (’a -> ’c) • ’a -> ’b
+• (’a -> ’b) -> (’b -> ’c) -> (’a -> ’c)
+• ’a -> ’b
 • ’a
-Remember that the type arrow (->) is right associative, so int -> int -> int is the same as int -> (int -> int), and that the choice of type variables does not matter, so the type scheme ’h -> ’g -> ’h is the same asa’ -> ’b -> ’a.
+Remember that the type arrow (->) is right associative, so int -> int -> int is the same as int -> (int -> int), and that the choice of type variables does not matter, so the type scheme ’h -> ’g -> ’h is the same as a’ -> ’b -> ’a.

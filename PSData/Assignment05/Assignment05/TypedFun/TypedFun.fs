@@ -39,6 +39,7 @@ type typ =
   | TypF of typ * typ                   (* (argumenttype, resulttype)  *)
   | TypL of typ                         (* list, element type is typ   *)
 
+
 (* New abstract syntax with explicit types, instead of Absyn.expr: *)
 
 type tyexpr = 
@@ -210,3 +211,19 @@ let exErr3 = Letfun("f", "x", TypB, Call(Var "f", CstI 22), TypI,
 
 let exErr4 = Letfun("f", "x", TypB, If(Var "x", CstI 11, CstI 22), TypB,
                     Call(Var "f", CstB true));;
+
+
+
+let e1 = fun x -> if x then true else false
+let e2 = fun x -> x + 2
+let e3 x = fun y -> x + y
+let e4 a = fun b -> a
+let e5 a = fun b -> b
+
+(* ('a -> 'b) -> ('b -> 'c) -> ('a -> 'c) *) //transitive ?
+let e6 a = a
+(* 'a -> 'b *)
+let e7 = fun a -> 1
+(* 'a *)
+//?
+
