@@ -107,7 +107,7 @@ Look in files FunLex.fsl and FunPar.fsy
 
 ## 6.4
 
-We did unfortunately not figure this out in time. 
+Look at tree1.jpg and tree2.jpg in project root folder. 
 
 ## 6.5
 
