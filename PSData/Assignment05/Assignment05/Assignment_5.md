@@ -4,9 +4,10 @@ PLC: 5.1, 5.7, 6.1, 6.2, 6.3, 6.4 and 6.5
 
 ## 5.1
 
-5.1 A)
+A)
 See Exercises.fs
-5.1 B)
+
+B)
 See CSharpEx/Program.cs for second part.
 
 ## 5.7
