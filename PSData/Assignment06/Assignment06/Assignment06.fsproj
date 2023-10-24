@@ -5,8 +5,101 @@
         <TargetFramework>net7.0</TargetFramework>
     </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Include="MicroC\Absyn.fs" />
+    <Compile Include="MicroC\CPar.fsi" />
+    <Content Include="MicroC\CPar.exe" />
+    <Compile Include="MicroC\CPar.fs" />
+    <Content Include="MicroC\CPar.fsy" />
+    <Compile Include="MicroC\CLex.fs" />
+    <Content Include="MicroC\CLex.fsl" />
+    <Content Include="MicroC\Machine.class" />
+    <Compile Include="MicroC\Machine.fs" />
+    <Content Include="MicroC\Machine.java" />
+    <Content Include="MicroC\machine" />
+    <ClCompile Include="MicroC\machine.c" />
+    <Content Include="MicroC\Machinetrace.class" />
+    <Compile Include="MicroC\Comp.fs" />
+    <Compile Include="MicroC\Contcomp.fs" />
+    <Compile Include="MicroC\Interp.fs" />
+    <Compile Include="MicroC\Parse.fs" />
+    <Compile Include="MicroC\ParseAndComp.fs" />
+    <Compile Include="MicroC\ParseAndContcomp.fs" />
+    <Compile Include="MicroC\ParseAndRun.fs" />
+    <Compile Include="MicroC\MicroCC.fs" />
+  </ItemGroup>
+
     <ItemGroup>
-        <Compile Include="Program.fs"/>
+      <ClCompile Include="MicroC\testing.c" />
     </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="MicroC\a.out" />
+      <Content Include="MicroC\bar" />
+      <Content Include="MicroC\FSharp.Core.dll" />
+      <Content Include="MicroC\grammar.txt" />
+      <Content Include="MicroC\microcc.exe" />
+      <Content Include="MicroC\obj\fsac.cache" />
+      <Content Include="MicroC\out" />
+      <Content Include="MicroC\prog0" />
+      <Content Include="MicroC\prog1" />
+      <Content Include="MicroC\README.TXT" />
+      <ClCompile Include="MicroC\ExC\ex1.c" />
+      <Content Include="MicroC\ExC\ex1.out" />
+      <ClCompile Include="MicroC\ExC\ex2.c" />
+      <Content Include="MicroC\ExC\ex2.out" />
+      <ClCompile Include="MicroC\ExC\ex3.c" />
+      <Content Include="MicroC\ExC\ex3.out" />
+      <ClCompile Include="MicroC\ExC\ex4.c" />
+      <Content Include="MicroC\ExC\ex4.out" />
+      <ClCompile Include="MicroC\ExC\ex5.c" />
+      <Content Include="MicroC\ExC\ex5.out" />
+      <ClCompile Include="MicroC\ExC\ex6.c" />
+      <Content Include="MicroC\ExC\ex6.out" />
+      <ClCompile Include="MicroC\ExC\ex7.c" />
+      <ClCompile Include="MicroC\ExC\ex8.c" />
+      <Content Include="MicroC\ExC\ex8.out" />
+      <ClCompile Include="MicroC\ExC\ex9.c" />
+      <Content Include="MicroC\ExC\ex9.out" />
+      <ClCompile Include="MicroC\ExC\ex10.c" />
+      <Content Include="MicroC\ExC\ex10.out" />
+      <ClCompile Include="MicroC\ExC\ex11.c" />
+      <Content Include="MicroC\ExC\ex11.out" />
+      <ClCompile Include="MicroC\ExC\ex12.c" />
+      <Content Include="MicroC\ExC\ex12.out" />
+      <Content Include="MicroC\ExC\ex12notailcall.out" />
+      <Content Include="MicroC\ExC\ex12tailcall.out" />
+      <ClCompile Include="MicroC\ExC\ex13.c" />
+      <Content Include="MicroC\ExC\ex13.out" />
+      <ClCompile Include="MicroC\ExC\ex14.c" />
+      <ClCompile Include="MicroC\ExC\ex15.c" />
+      <ClCompile Include="MicroC\ExC\ex16.c" />
+      <ClCompile Include="MicroC\ExC\ex17.c" />
+      <ClCompile Include="MicroC\ExC\ex18.c" />
+      <ClCompile Include="MicroC\ExC\ex19.c" />
+      <Content Include="MicroC\ExC\ex19.out" />
+      <ClCompile Include="MicroC\ExC\ex20.c" />
+      <ClCompile Include="MicroC\ExC\ex21.c" />
+      <Content Include="MicroC\ExC\ex21.out" />
+      <ClCompile Include="MicroC\ExC\ex22.c" />
+      <Content Include="MicroC\ExC\ex22.out" />
+      <ClCompile Include="MicroC\ExC\ex23.c" />
+      <Content Include="MicroC\ExC\ex23.out" />
+      <ClCompile Include="MicroC\ExC\ex24.c" />
+      <ClCompile Include="MicroC\ExC\ex25.c" />
+      <Content Include="MicroC\ExC\ex25.code" />
+      <Content Include="MicroC\ExC\ex25.out" />
+      <ClCompile Include="MicroC\ExC\ex26.c" />
+      <Content Include="MicroC\ExC\ex26.out" />
+      <ClCompile Include="MicroC\ExC\tailEx.c" />
+      <Content Include="MicroC\ExC\tailEx.out" />
+      <Content Include="MicroC\ExC\tailEx2.out" />
+      <ClCompile Include="MicroC\ExC\wrapUpEx01.c" />
+      <Content Include="MicroC\ExC\wrapUpEx01.exe" />
+      <Content Include="MicroC\ExC\wrapUpEx01.out" />
+      <PackageReference Include="FsLexYacc" Version="9.0.2" />
+    </ItemGroup>
+
+
 
 </Project>
