@@ -2,7 +2,6 @@ void histogram(int n, int ns[], int max, int freq[]){
     int count;
     int k;
     int val;
-
     int i;
     i = 0;
     while (i <= max){
@@ -21,6 +20,7 @@ void histogram(int n, int ns[], int max, int freq[]){
     }
 }
 
+
 void main(int max){
     int ns[7];
     ns[0] = 1;
@@ -37,7 +37,6 @@ void main(int max){
     int freq[4]; //UNABLE TO SET FREQ[SIZE]????
 
     histogram(7,ns,max,freq);
-
     int i;
     i = 0;
     while (i < size){
