@@ -22,49 +22,18 @@ Also remember to initialize all variables and array elements; this doesn’t hap
 (For example, if your main function creates an array arr holding the seven numbers 1 2 1 1 1 2 0 and calls histogram(7, arr, 3, freq), then afterwards freq[0] is 1, freq[1] is 4, freq[2] is 2, and freq[3] is 0. Of course, freq must be an array with at least four elements. What happens if it is not? The array freq should be declared and allocated in the main func- tion, and passed to histogram function. It does not work correctly (in micro-C or C) to stack-allocate the array in histogram and somehow return it to the main function. Your main function should print the contents of array freq after the call.)
 
 ## Exercise 7.3 
-*Extend MicroC with a for-loop*, permitting for instance
 
-```fsharp
-    for (i=0; i<100; i=i+1)
-    sum = sum+i;
-```
+Edited CPar.fsy in lines 17, 103, 110
+Edited CPar.fsl in line 31
 
-To do this, you must *modify the lexer and parser specifications in *CLex.fsl** and **CPar.fsy**. You *may also extend the micro-C abstract syntax in *Absyn.fs** by *defining a new statement constructor Forloop in the stmt type*, and add a suitable case to the exec function in the *interpreter*.
-But actually, with a modest amount of cleverness (highly recommended), *you do not need to introduce special abstract syntax for for-loops*, and need *not modify the interpreter at all*. Namely, a for-loop of the general form
-
-```fsharp
-for (e1; e2; e3)
-  stmt
-```
-
-is equivalent to a block
-
-```fsharp
-{
-e1;
-  while (e2) {
-    stmt
-e3; }
-}
-```
-
-Hence it suffices to let the semantic action { ... } in the parser construct abstract syntax using the existing Block, While, and Expr constructors from the stmt type.
-Rewrite your programs from Exercise 7.2 to use for-loops instead of while-loops.
+New code with for loops can be found in ExC/ex73i.c, ExC/ex73ii.c and ExC/ex73iii.c
 
 ## Exercise 7.4 
 
-Extend the micro-C abstract syntax in **Absyn.fs** with the *preincrement and predecrement operators* known from C, C++, Java, and C#:
-
-```fsharp
-type expr =
-    ...
-  | PreInc of access   (* C/C++/Java/C#  ++i  or  ++a[e]  *)
-  | PreDec of access   (* C/C++/Java/C#  --i  or  --a[e]  *)
-```
-
-Note that the predecrement and preincrement operators work on lvalues, that is, variables and array elements, and more generally on any expression that evaluates to a location.
-Modify the micro-C interpreter in **Interp.fs** to handle PreInc and PreDec. You will need to modify the *eval function*, and use the *getSto* and *setSto* store operations (**Sect. 7.3**).
+Edited Absyn.fs in lines 20 and 21
+Edited Interp.fs from lines 161 to 166
 
 ## Exercise 7.5
 
-Extend the micro-C lexer and parser to accept ++e and --e also, and to build the corresponding abstract syntax.
+Edited CPar.fsy in lines 21, 32, 139 and 140
+Edited CPar.fsl in lines 54 and 56
