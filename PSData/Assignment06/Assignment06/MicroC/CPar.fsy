@@ -15,10 +15,10 @@ let nl = CstI 10
 %token <string> CSTSTRING NAME
 
 %token CHAR ELSE IF INT NULL PRINT PRINTLN RETURN VOID WHILE FORLOOP        /* ADDED FORLOOP */
-%token PLUS MINUS TIMES DIV MOD
+%token PLUS MINUS TIMES DIV MOD                                
 %token EQ NE GT LT GE LE
 %token NOT SEQOR SEQAND
-%token LPAR RPAR LBRACE RBRACE LBRACK RBRACK SEMI COMMA ASSIGN AMP
+%token LPAR RPAR LBRACE RBRACE LBRACK RBRACK SEMI COMMA ASSIGN AMP PREINC PREDEC  /* ADDED PREDEC and PREINC */
 %token EOF
 
 %right ASSIGN             /* lowest precedence */
@@ -28,8 +28,9 @@ let nl = CstI 10
 %left EQ NE 
 %left GT LT GE LE
 %left PLUS MINUS
-%left TIMES DIV MOD 
-%nonassoc NOT AMP 
+%left TIMES DIV MOD
+%right PREDEC PREINC        /* ADDED LINE */
+%nonassoc NOT AMP
 %nonassoc LBRACK          /* highest precedence  */
 
 %start Main
@@ -135,6 +136,8 @@ ExprNotAccess:
   | Expr LE    Expr                     { Prim2("<=", $1, $3) }
   | Expr SEQAND Expr                    { Andalso($1, $3)     }
   | Expr SEQOR  Expr                    { Orelse($1, $3)      }
+  | PREINC Access                       { PreInc $2           } /* ADDED LINE */
+  | PREDEC Access                       { PreDec $2           } /* ADDED LINE */
 ;
 
 AtExprNotAccess:

@@ -17,6 +17,8 @@ and expr =
   | Access of access                 (* x    or  *p    or  a[e]     *)
   | Assign of access * expr          (* x=e  or  *p=e  or  a[e]=e   *)
   | Addr of access                   (* &x   or  &*p   or  &a[e]    *)
+  | PreInc of access                 (* C/C++/Java/C# ++i or ++a[e] *) (* ADDED THIS LINE *)
+  | PreDec of access                 (* C/C++/Java/C# --i or --a[e] *) (* ADDED THIS LINE *)
   | CstI of int                      (* Constant                    *)
   | Prim1 of string * expr           (* Unary primitive operator    *)
   | Prim2 of string * expr * expr    (* Binary primitive operator   *)
