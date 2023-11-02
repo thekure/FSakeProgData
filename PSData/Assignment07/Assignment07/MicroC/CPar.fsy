@@ -29,7 +29,7 @@ let nl = CstI 10
 %left GT LT GE LE
 %left PLUS MINUS
 %left TIMES DIV MOD
-%right PREDEC PREINC        /* ADDED LINE */
+%right PREDEC PREINC        
 %nonassoc NOT AMP
 %nonassoc LBRACK          /* highest precedence  */
 
@@ -136,8 +136,8 @@ ExprNotAccess:
   | Expr LE    Expr                     { Prim2("<=", $1, $3) }
   | Expr SEQAND Expr                    { Andalso($1, $3)     }
   | Expr SEQOR  Expr                    { Orelse($1, $3)      }
-  | PREINC Access                       { PreInc $2           } /* ADDED LINE */
-  | PREDEC Access                       { PreDec $2           } /* ADDED LINE */
+  | PREINC Access                       { PreInc $2           } 
+  | PREDEC Access                       { PreDec $2           } 
 ;
 
 AtExprNotAccess:
