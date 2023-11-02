@@ -104,6 +104,7 @@
       <ClCompile Include="MicroC\ExC\ex73ii.c" />
       <ClCompile Include="MicroC\ExC\ex73iii.c" />
       <ClCompile Include="MicroC\ExC\ex72i.c" />
+      <Content Include="README.md" />
       <PackageReference Include="FsLexYacc" Version="9.0.2" />
     </ItemGroup>
 
