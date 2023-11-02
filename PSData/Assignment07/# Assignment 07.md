@@ -2,25 +2,9 @@
 
 ## Exercise 8.1
 
-Download *microc.zip* from the book homepage, unpack it to a folder MicroC, and *build the micro-C compiler as explained in README.TXT step (B)*.
-
-- (i) As a warm-up, *compile one of the micro-C examples provided*, such as that in source file *ex11.c*, then *run it using the abstract machine implemented in Java*, as described also in step (B) of the README file. When run with command line argument 8, the program prints the 92 solutions to the eight queens problem: how to place eight queens on a chessboard so that none of them can attack any of the others.
-
-- (ii) Now compile the example micro-C programs *ex3.c* and *ex5.c* using functions *compileToFile and fromFile* from *ParseAndComp.fs* as above.
-
-Study the generated symbolic bytecode. *Write up the bytecode in a more structured way* with *labels* only at the beginning of the line (as in this chapter). *Write the corresponding micro-C code* to the right of the stack machine code. Note that *ex5.c* has a nested scope (a block { ... } inside a function body); *how is that visible in the generated code?*
-
-Execute the compiled programs using *java Machine ex3.out 10* and similar. Note that these micro-C programs require a command line argument (an integer) when they are executed.
-
-*Trace the execution using java Machinetrace ex3.out 4*, and *explain the stack contents and what goes on in each step of execution*, and *especially how the low-level bytecode instructions map to the higher-level features of micro-C*. You can capture the standard output from a command prompt (in a file ex3trace.txt) using the Unix-style notation:
-
-```java
-    java Machinetrace ex3.out 4 > ex3trace.txt
-```
-
 > ANSWERS:
 
-For (i)
+### For (i)
 
 **First with fsharpi:**
 
@@ -157,9 +141,9 @@ $$
 
     Ran 0.021 seconds
 
-For (ii)
+### For (ii)
 
-**(A) Byte code generated from ex3:**
+#### **(A) Byte code generated from ex3:**
 24      LDARGS
 19 1 5  CALL    m a | main(m)
 
@@ -211,7 +195,7 @@ For (ii)
 15 -1   INCSP   m   | // WE ARE NOW FINISHED WITH MAIN()
 21 0    RET     m   | // AND RETURN TO 0 - NEXT INSTRUCTION IS 'STOP'
 
-**(B) Byte code generated from ex5:**
+#### **(B) Byte code generated from ex5:**
 24      LDARGS      |
 
 19 1 5  CALL m a    | main(m)
