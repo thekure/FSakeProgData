@@ -157,6 +157,131 @@ $$
 
     Ran 0.021 seconds
 
+For (ii)
+
+**(A) Byte code generated from ex3:**
+24      LDARGS
+19 1 5  CALL    m a | main(m)
+
+25      STOP        | // THIS WILL BE ADDED TO THE TOP OF THE STACK AFTER THE MAIN() CALL - ALLOW US TO BEAUTIFULLY EXIT THE PROGRAM
+
+15 1    INCSP   m   | int i;
+
+13      GETBP       |
+0 1     CSTI    i   |
+1       ADD         |
+0 0     CSTI    i   |
+12      STI         |
+15 -1   INCSP   m   | i = 0;
+
+16 43   GOTO    a   | //Go to the while-check
+
+13      GETBP       | // INSTR NO. 18
+0 1     CSTI    i   |
+1       ADD         |
+11      LDI         |
+22      PRINTI      |
+15 -1   INCSP   m   | print i;
+
+13      GETBP       |
+0 1     CSTI    i   |
+1       ADD         |
+13      GETBP       |
+0 1     CSTI        |
+1       ADD         |
+11      LDI         |
+0 1     CSTI    i   |
+1       ADD         |
+12      STI         |
+15 -1   INCSP   m   | i = i + 1;
+
+15 0    INCSP   m   |
+13      GETBP       |
+0 1     CSTI    i   |
+1       ADD         |
+11      LDI         |
+13      GETBP       |
+0 0     CSTI    i   |
+1       ADD         |
+11      LDI         |
+7       LT          | (i < n) // push either 1 (if true) or 0 (if false) to the stack.
+
+18 18   IFNZERO a   | WHILE() //We check the above expression and decide whether or not to enter the loop or not.
+
+15 -1   INCSP   m   | // WE ARE NOW FINISHED WITH MAIN()
+21 0    RET     m   | // AND RETURN TO 0 - NEXT INSTRUCTION IS 'STOP'
+
+**(B) Byte code generated from ex5:**
+24      LDARGS      |
+
+19 1 5  CALL m a    | main(m)
+
+25      STOP        |
+
+15 1    INCSP m     | int r;
+
+13      GETBP       |
+0 1     CSTI i      |
+1       ADD         |
+13      GETBP       |
+0 0     CSTI i      |
+1       ADD         |
+11      LDI         | //Get argument from main()
+12      STI         |
+15 -1   INCSP m     | r = n;
+
+15 1    INCSP m     | int r;
+13      GETBP       |
+0 0     CSTI i      |
+1       ADD         |
+11      LDI         |
+
+13      GETBP       |
+0 2     CSTI i      | //Need two spaces, since the method requires two arguments
+1       ADD         |
+19 2 57 CALL m a    | square(m) //Call square with the latest two stored values; (value of r and then address of r)
+
+15 -1   INCSP m     |
+13      GETBP       |
+0 2     CSTI i      |
+1       ADD         |
+11      LDI         |
+22      PRINTI      |
+15 -1   INCSP m     |
+15 -1   INCSP m     | print r;
+
+13      GETBP       |
+0 1     CSTI i      |
+1       ADD         |
+11      LDI         |
+22      PRINTI      |
+15 -1   INCSP m     | print r;
+
+15 -1   INCSP m     |
+21 0    RET m       | // RETURN AFTER MAIN FUNCTION
+
+13      GETBP       | // THIS IS THE ADDRESS OF THE CALL FUNCTION
+0 1     CSTI i      |
+1       ADD         |
+11      LDI         |
+13      GETBP       |
+0 0     CSTI i      |
+1       ADD         |
+11      LDI         |
+13      GETBP       |
+0 0     CSTI i      |
+1       ADD         |
+11      LDI         |
+3       MUL         |
+12      STI         |
+15 -1   INCSP m     | *rp = i * i;
+
+15 0    INCSP m     |
+21 1    RET m       | // RETURN AFTER SQUARE FUNCTION
+
+**Traces can be found in ExC/ex3trace.txt**
+The link between machinecode and C can be found above, specifically in the analysis of bytecode generated for ex3, 8.1.ii.A.
+
 ## Exercise8.3
 
 This abstract syntax for preincrement ++e and predecrement--e was introduced in Exercise 7.4:
@@ -167,13 +292,13 @@ type expr =
   | PreDec of access   (* C/C++/Java/C#  --i  or  --a[e]  *)
 ```
 
-Modify the compiler (function cExpr) to generate code for PreInc(acc) and PreDec(acc). To parse micro-C source programs containing these expressions, you also need to modify the lexer and parser.
+Modify the *compiler* (function cExpr) to generate code for PreInc(acc) and PreDec(acc). To parse micro-C source programs containing these expressions, you also need to modify the *lexer* and *parser*.
 
 It is tempting to expand ++e to the assignment expression e = e+1, but that would evaluate e twice, which is wrong. Namely, e may itself have a side effect, as in ++arr[++i].
 
 Hence e should be computed only once. For instance, ++i should compile to something like this: <code to compute address of i>, DUP, LDI, CSTI 1, ADD, STI, where the address of i is computed once and then duplicated.
 
-Write a program to check that this works. If you are brave, try it on expressions of the form ++arr[++i] and check that i and the elements of arr have the correct values afterwards.
+*Write a program to check that this works*. If you are brave, try it on expressions of the form ++arr[++i] and check that i and the elements of arr have the correct values afterwards.
 
 
 ## Exercise 8.4
