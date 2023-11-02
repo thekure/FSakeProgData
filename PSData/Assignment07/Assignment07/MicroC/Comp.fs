@@ -206,10 +206,17 @@ and cExpr (e : expr) (varEnv : varEnv) (funEnv : funEnv) : instr list =
       @ cExpr e2 varEnv funEnv
       @ [GOTO labend; Label labtrue; CSTI 1; Label labend]
     | Call(f, es) -> callfun f es varEnv funEnv
-    | PreInc acc ->                                                     (* NEW LINE *)
-        cAccess acc varEnv funEnv @ [DUP; LDI; CSTI 1; ADD; STI]        (* NEW LINE *)
-    | PreDec acc ->                                                     (* NEW LINE *)
-        cAccess acc varEnv funEnv @ [DUP; LDI; CSTI 1; SUB; STI]        (* NEW LINE *)
+    | PreInc acc ->                                                     (* NEW LINE  FROM HERE *)
+        cAccess acc varEnv funEnv @ [DUP; LDI; CSTI 1; ADD; STI]                 
+    | PreDec acc ->                                                     
+        cAccess acc varEnv funEnv @ [DUP; LDI; CSTI 1; SUB; STI]                 
+    | Tern (e1, e2, e3) ->  
+        let labelse = newLabel()
+        let labend  = newLabel()
+        cExpr e varEnv funEnv @ [IFZERO labelse] 
+        @ cExpr e2 varEnv funEnv @ [GOTO labend]
+        @ [Label labelse] @ cExpr e3 varEnv funEnv
+        @ [Label labend]                                                        (* TO HERE              *)
 
 (* Generate code to access variable, dereference pointer or index array.
    The effect of the compiled code is to leave an lvalue on the stack.   *)
