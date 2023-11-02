@@ -2,22 +2,6 @@
 
 ## Exercise 8.1
 
-Download *microc.zip* from the book homepage, unpack it to a folder MicroC, and *build the micro-C compiler as explained in README.TXT step (B)*.
-
-- (i) As a warm-up, *compile one of the micro-C examples provided*, such as that in source file *ex11.c*, then *run it using the abstract machine implemented in Java*, as described also in step (B) of the README file. When run with command line argument 8, the program prints the 92 solutions to the eight queens problem: how to place eight queens on a chessboard so that none of them can attack any of the others.
-
-- (ii) Now compile the example micro-C programs *ex3.c* and *ex5.c* using functions *compileToFile and fromFile* from *ParseAndComp.fs* as above.
-
-Study the generated symbolic bytecode. *Write up the bytecode in a more structured way* with *labels* only at the beginning of the line (as in this chapter). *Write the corresponding micro-C code* to the right of the stack machine code. Note that *ex5.c* has a nested scope (a block { ... } inside a function body); *how is that visible in the generated code?*
-
-Execute the compiled programs using *java Machine ex3.out 10* and similar. Note that these micro-C programs require a command line argument (an integer) when they are executed.
-
-*Trace the execution using java Machinetrace ex3.out 4*, and *explain the stack contents and what goes on in each step of execution*, and *especially how the low-level bytecode instructions map to the higher-level features of micro-C*. You can capture the standard output from a command prompt (in a file ex3trace.txt) using the Unix-style notation:
-
-```java
-    java Machinetrace ex3.out 4 > ex3trace.txt
-```
-
 > ANSWERS:
 
 For (i)
@@ -285,20 +269,34 @@ The link between machinecode and C can be found above, specifically in the analy
 ## Exercise 8.3
 
 The solution can be found in Comp.fs lines 209 to 212, if you so desire.
+The solution is tested by running the machine code generated from "ExC/ex8_3.c" and stored in the associated .out file. The machinecode generated is:
 
+```c
+24 19 1 5 25 15 1 13 0 1 1 0 0 12 15 -1 13 0 1 1 9 11 0 1 1 12 22 15 -1 13 0 1 1 11 22 15 -1 15 1 13 0 2 1 0 0 12 15 -1 13 0 2 1 9 11 0 1 2 12 22 15 -1 15 -2 21 0
+```
+
+The expected output from the file is three prints; 1 1 -1.
 
 ## Exercise 8.4
 
-Compile ex8.c and study the symbolic bytecode to see why it is so much slower than the handwritten 20 million iterations loop in prog1.
-Compile ex13.c and study the symbolic bytecode to see how loops and condi- tionals interact; describe what you see.
-In a later chapter we shall see an improved micro-C compiler that generates fewer extraneous labels and jumps.
+(1)
+Machine code for ExC/ex8.out (with a change from 20 mil to 500k)
+24 19 0 5 25 15 1 13 0 0 1 0 500000 12 15 -1 16 35 13 0 0 1 13 0 0 1 11 0 1 2 12 15 -1 15 0 13 0 0 1 11 18 18 15 -1 21 -1
+
+ExC/prog1.out (notice the 500k as well)
+0 500000 16 7 0 1 2 9 18 4 25
+
+The first is significantly longer with 46 instructions whereas the second only has 11. The first one makes superflous stack operations while the other is more effienct, this can be seen in their runtime 8.4 seconds vs 58 seconds (for 500.000 iterations).
+
+(2)
+When using loops and conditinal statements, the base pointer is thrown around. At the same time, in every iteration of the loop we need to allocate stack-space (and remove it) to the conditional statements and their variables - we find this inefficient.
 
 ## Exercise 8.5
 
-Extend the micro-C language,the abstract syntax, the lexer,the parser, and the compiler to implement conditional expressions of the form (e1 ? e2 : e3).
+Extend the micro-C language, the abstract syntax, the lexer, the parser, and the compiler to implement conditional expressions of the form (e1 ? e2 : e3).
 The compilation of e1 ? e2 : e3 should produce code that evaluates e2 only if e1 is true and evaluates e3 only if e1 is false. The compilation scheme should be the same as for the conditional statement if (e1) e2 else e3, but expression e2 or expression e3 must leave its value on the stack top if evaluated, so that the entire expression e1 ? e2 : e3 leaves its value on the stack top.
 
-## Exercise 8.6 
+## Exercise 8.6
 
 Extend the lexer, parser, abstract syntax and compiler to implement switch statements such as this one:
 
