@@ -282,23 +282,9 @@ For (ii)
 **Traces can be found in ExC/ex3trace.txt**
 The link between machinecode and C can be found above, specifically in the analysis of bytecode generated for ex3, 8.1.ii.A.
 
-## Exercise8.3
+## Exercise 8.3
 
-This abstract syntax for preincrement ++e and predecrement--e was introduced in Exercise 7.4:
-```fsharp
-type expr =
-    ...
-  | PreInc of access   (* C/C++/Java/C#  ++i  or  ++a[e]  *)
-  | PreDec of access   (* C/C++/Java/C#  --i  or  --a[e]  *)
-```
-
-Modify the *compiler* (function cExpr) to generate code for PreInc(acc) and PreDec(acc). To parse micro-C source programs containing these expressions, you also need to modify the *lexer* and *parser*.
-
-It is tempting to expand ++e to the assignment expression e = e+1, but that would evaluate e twice, which is wrong. Namely, e may itself have a side effect, as in ++arr[++i].
-
-Hence e should be computed only once. For instance, ++i should compile to something like this: <code to compute address of i>, DUP, LDI, CSTI 1, ADD, STI, where the address of i is computed once and then duplicated.
-
-*Write a program to check that this works*. If you are brave, try it on expressions of the form ++arr[++i] and check that i and the elements of arr have the correct values afterwards.
+The solution can be found in Comp.fs lines 209 to 212, if you so desire.
 
 
 ## Exercise 8.4
