@@ -97,6 +97,12 @@
       <ClCompile Include="MicroC\ExC\wrapUpEx01.c" />
       <Content Include="MicroC\ExC\wrapUpEx01.exe" />
       <Content Include="MicroC\ExC\wrapUpEx01.out" />
+      <ClCompile Include="MicroC\ExC\ex72iii.c" />
+      <ClCompile Include="MicroC\ExC\ex72ii.c" />
+      <ClCompile Include="MicroC\ExC\ex73i.c" />
+      <ClCompile Include="MicroC\ExC\ex73ii.c" />
+      <ClCompile Include="MicroC\ExC\ex73iii.c" />
+      <ClCompile Include="MicroC\ExC\ex72i.c" />
       <PackageReference Include="FsLexYacc" Version="9.0.2" />
     </ItemGroup>
 

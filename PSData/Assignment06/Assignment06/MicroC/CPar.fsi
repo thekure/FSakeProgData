@@ -12,6 +12,8 @@ type token =
   | COMMA
   | ASSIGN
   | AMP
+  | PREINC
+  | PREDEC
   | NOT
   | SEQOR
   | SEQAND
@@ -36,6 +38,7 @@ type token =
   | RETURN
   | VOID
   | WHILE
+  | FORLOOP
   | CSTSTRING of (string)
   | NAME of (string)
   | CSTINT of (int)
@@ -52,6 +55,8 @@ type tokenId =
     | TOKEN_COMMA
     | TOKEN_ASSIGN
     | TOKEN_AMP
+    | TOKEN_PREINC
+    | TOKEN_PREDEC
     | TOKEN_NOT
     | TOKEN_SEQOR
     | TOKEN_SEQAND
@@ -76,6 +81,7 @@ type tokenId =
     | TOKEN_RETURN
     | TOKEN_VOID
     | TOKEN_WHILE
+    | TOKEN_FORLOOP
     | TOKEN_CSTSTRING
     | TOKEN_NAME
     | TOKEN_CSTINT
