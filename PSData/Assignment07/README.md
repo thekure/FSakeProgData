@@ -279,7 +279,7 @@ The expected output from the file is three prints; 1 1 -1.
 
 ## Exercise 8.4
 
-(1)
+### (1)
 Machine code for ExC/ex8.out (with a change from 20 mil to 500k)
 24 19 0 5 25 15 1 13 0 0 1 0 500000 12 15 -1 16 35 13 0 0 1 13 0 0 1 11 0 1 2 12 15 -1 15 0 13 0 0 1 11 18 18 15 -1 21 -1
 
@@ -288,27 +288,18 @@ ExC/prog1.out (notice the 500k as well)
 
 The first is significantly longer with 46 instructions whereas the second only has 11. The first one makes superflous stack operations while the other is more effienct, this can be seen in their runtime 8.4 seconds vs 58 seconds (for 500.000 iterations).
 
-(2)
-When using loops and conditinal statements, the base pointer is thrown around. At the same time, in every iteration of the loop we need to allocate stack-space (and remove it) to the conditional statements and their variables - we find this inefficient.
+### (2)
+When using loops and conditional statements, the base pointer is thrown around. At the same time, in every iteration of the loop we need to allocate stack-space (and remove it) to the conditional statements and their variables - we find this inefficient.
 
 ## Exercise 8.5
 
-Extend the micro-C language, the abstract syntax, the lexer, the parser, and the compiler to implement conditional expressions of the form (e1 ? e2 : e3).
-The compilation of e1 ? e2 : e3 should produce code that evaluates e2 only if e1 is true and evaluates e3 only if e1 is false. The compilation scheme should be the same as for the conditional statement if (e1) e2 else e3, but expression e2 or expression e3 must leave its value on the stack top if evaluated, so that the entire expression e1 ? e2 : e3 leaves its value on the stack top.
+Edited these files:
+
+Absyn.fs    line 28
+Comp.fs     lines 209-219
+CLex.fsl    lines 83, 84, 
+CPar.fsy    lines 17, 32, 142
 
 ## Exercise 8.6
 
-Extend the lexer, parser, abstract syntax and compiler to implement switch statements such as this one:
-
-```c
-switch (month) {
-  case 1:
-    { days = 31; }
-  case 2:
-    { days = 28; if (y%4==0) days = 29; }
-  case 3:
-    { days = 31; } 
-}
-```
-
-Unlike in C, there should be no fall-through from one case to the next: after the last statement of a case, the code should jump to the end of the switch statement. The parenthesis after switch must contain an expression. The value after a case must be an integer constant, and a case must be followed by a statement block. A switch with n cases can be compiled using n labels, the last of which is at the very end of the switch. For simplicity, do not implement the break statement or the default branch.
+Didn't get around to doing this one.
