@@ -25,6 +25,9 @@ Selsort.il:
 Open *Selsort.il* in a text editor, *find method SelectionSort* and its body (bytecode), and delete everything else. Now try to understand the purpose of each bytecode instruction. Write comments to the right of the instructions (or between them) as you discover their purpose. Also describe which local variables in the bytecode (local 0, 1, . . . ) correspond to which variables in the source code.
 To see the precise description of a .NET Common Language Infrastructure bytecode instruction such as ldc.i4.0, consult the Ecma-335 standard [11], find Partition III (PDF pages 324–471 in the December 2010 version) of that document, and *search for ldc*.
 
+> Answer:
+Please do take a look at the file **Selsort.il**, if you so desire.
+
 (ii) Now do the same with the corresponding Java method in file *Selsort.java*. Compile it, then disassemble the Selsort class:
 
 ```shell
@@ -34,8 +37,6 @@ To see the precise description of a .NET Common Language Infrastructure bytecode
 
 Then investigate and comment *Selsort.jvm* bytecode as suggested above. For the precise description of JVM bytecode instructions, see [18, Chap. 6].
 Hand in the two edited bytecode files with your comments.
-
-
 
 # Exercise 9.2
 
