@@ -52,6 +52,10 @@ This exercise investigates the garbage collection impact in Microsoft .NET of us
 
 You will probably observe that the first computation (using a StringBuilder) is tremendously fast compared to the second one (repeated string concatenation), although they compute exactly the same result. The reason is that the latter allocates a lot of temporary strings, each one slightly larger than the previous one, and copies all the characters from the old string to the new one.
 
+### Answer
+
+![](/Assignment08/pics/9_2_i.png)
+
 (ii) In this part, try to use the Windows Performance Monitor to observe the .NET garbage collector’s behavior when running StringConcatSpeed.
 
 - In the Visual Studio Command Prompt, start perfmon.
@@ -67,4 +71,24 @@ You will probably observe that the first computation (using a StringBuilder) is 
 - Press return in the Visual Studio Command Prompt to let the StringConcatSpeed program continue. You should now observe that a considerable percentage of execution time (maybe 30–50 percent) is spent on garbage collection. For most well-written applications, this should be only 0–10 per- cent, so the high percentage is a sign that the program is written in a sick way.
 - Hand in your quantitative observations together with a description of the platform (version of .NET etc.).
 
+### Answer
+
+Below is the StringConcatSpeed initialized three times. This is shown in the three different pictures depicting the concatinating speed, as well as in the fourth picture depicting the garbage collection of the three different instances.
+
+![](/Assignment08/pics/9_2_ii_1.png)
+
+![](/Assignment08/pics/9_2_ii_2.png)
+
+![](/Assignment08/pics/9_2_ii_3.png)
+
+![](/Assignment08/pics/9_2_ii_peaks.png)
+
+The platform is using .NET version 7.0.302.
+
 (iii) Find another long-running C# program or application (you may well run it from within Visual Studio) and measure the time spent in garbage collection using the perfmon as above. Note: It is very important that you attach the performance counter to the particular process (“instance”) that you want to measure, in the step marked (***) above, otherwise the results will be meaningless.
+
+### Answer
+
+The name of the C# program is ex92iii_test and can be found in ./virtual/ex92iii_test
+
+![](/Assignment08/pics/9_2_iii.png)
