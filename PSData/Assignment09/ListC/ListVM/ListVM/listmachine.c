@@ -81,7 +81,7 @@ created when allocating all but the last word of a free block.
   #define PPCOMP "Not compiled with gcc."
 #endif
 
-#if _WIN64 || __x86_64__ || __ppc64__
+#if _WIN64 || __x86_64__ || __ppc64__ || __aarch64__
   #define ENV64
   #define PPARCH "64 bit architecture."
 #else

@@ -10,7 +10,8 @@ Building the list-C command line compiler listcc:
    fsyacc --module CPar CPar.fsy
 
    fsc --standalone -r ~/fsharp/FsLexYacc.Runtime.dll Absyn.fs CPar.fs CLex.fs Parse.fs Machine.fs Comp.fs ListCC.fs -o listcc.exe
-      or if you have fsharpc as the compiler instead of fsc, e.g., Mono on Mac:
+      or if you have fsharpc as the compiler instead of fsc, e.g., 
+      Mono on Mac:
    fsharpc --standalone -r ~/fsharp/FsLexYacc.Runtime.dll Absyn.fs CPar.fs CLex.fs Parse.fs Machine.fs Comp.fs ListCC.fs -o listcc.exe
 
 Using the list-C command line compiler to compile program ex30.lc
