@@ -471,12 +471,25 @@ void initheap() {
   freelist = &heap[0];
 }
 
+void mark(word* block){
+  // should recursively mark everything reachable from the block.
+}
+
 void markPhase(word s[], word sp) {
+  for (int i = 0; i <= sp; i++){
+  
+  }
+  // call mark on each non-nil heap reference in the stack
   printf("marking ...\n");
   // TODO: Actually mark something
 }
 
 void sweepPhase() {
+  // should scan the entire heap, put white blocks on the freelist, and paint 
+  // black blocks white. It should ignore blue blocks; they are either already 
+  // on the freelist or they are orphan blocks which are neither used for data 
+  // nor on the freelist, because they consist only of a block header, so there 
+  // is no way to link them into the freelist.
   printf("sweeping ...\n");
   // TODO: Actually sweep
 }
@@ -496,19 +509,19 @@ word* allocate(unsigned int tag, uword length, word s[], word sp) {
     while (free != 0) {
       word rest = Length(free[0]) - length;
       if (rest >= 0) {
-	if (rest == 0) // Exact fit with free block
-	  *prev = (word*)free[1];
-	else if (rest == 1) { // Create orphan (unusable) block
-	  *prev = (word*)free[1];
-	  free[length + 1] = mkheader(0, rest - 1, Blue);
-	}
-	else { // Make previous free block point to rest of this block
-	  *prev = &free[length + 1];
-	  free[length + 1] = mkheader(0, rest - 1, Blue);
-	  free[length + 2] = free[1];
-	}
-	free[0] = mkheader(tag, length, White);
-	return free;
+	      if (rest == 0) // Exact fit with free block
+	        *prev = (word*)free[1];
+	      else if (rest == 1) { // Create orphan (unusable) block
+	        *prev = (word*)free[1];
+	        free[length + 1] = mkheader(0, rest - 1, Blue);
+	      }
+	      else { // Make previous free block point to rest of this block
+	        *prev = &free[length + 1];
+	        free[length + 1] = mkheader(0, rest - 1, Blue);
+	        free[length + 2] = free[1];
+	      }
+	      free[0] = mkheader(tag, length, White);
+        return free;
       }
       prev = (word**)&free[1];
       free = (word*)free[1];
