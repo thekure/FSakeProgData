@@ -31,3 +31,6 @@ We believe that answer to be no, since collect is only called within allocate. I
 ### iv)
 
 When an allocation fails after traversing the full length of the heap.
+
+## 10.2
+

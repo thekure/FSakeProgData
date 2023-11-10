@@ -472,16 +472,36 @@ void initheap() {
 }
 
 void mark(word* block){
-  // should recursively mark everything reachable from the block.
+  if(!Color(block[0]) == Black){
+    Paint((block[0]), Black);
+    for(int i = 1; i <= Length(block[0]); i++){
+      mark(block[i]);
+    }
+  }
+  // if block isn't already marked:
+  //    paint black
+  //    for each pointer q inside *block
+  //      mark *q
 }
 
 void markPhase(word s[], word sp) {
-  for (int i = 0; i <= sp; i++){
-  
-  }
-  // call mark on each non-nil heap reference in the stack
   printf("marking ...\n");
-  // TODO: Actually mark something
+  for (int i = 0; i <= sp; i++){
+      if(inHeap((word*)s[i]) && (word*)s[i] != NIL){
+        Paint(((word*)s[i])[-1], Grey);
+        mark((word*)s[i]);
+      }
+      else{
+        Paint(((word*)s[i])[-1], White);
+      }
+  }
+
+  // call mark on each non-nil heap reference in the stack
+  // for each int in s
+  //    if inheap && not-nil: 
+  //        paint grey
+  //        mark(root)
+  //    else paint white
 }
 
 void sweepPhase() {
@@ -491,7 +511,13 @@ void sweepPhase() {
   // nor on the freelist, because they consist only of a block header, so there 
   // is no way to link them into the freelist.
   printf("sweeping ...\n");
-  // TODO: Actually sweep
+
+  // for each block on the heap
+  //    if white
+  //        paint blue
+  //        add to freelist
+  //    if black
+  //        paint white
 }
 
 void collect(word s[], word sp) {
