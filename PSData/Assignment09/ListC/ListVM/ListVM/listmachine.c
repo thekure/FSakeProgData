@@ -472,10 +472,10 @@ void initheap() {
 }
 
 void mark(word* block){
-  if(!Color(block[0]) == Black){
+  if(Color(block[0]) != Black){
     Paint((block[0]), Black);
     for(int i = 1; i <= Length(block[0]); i++){
-      mark(block[i]);
+      mark(&block[i]);
     }
   }
   // if block isn't already marked:
@@ -487,7 +487,7 @@ void mark(word* block){
 void markPhase(word s[], word sp) {
   printf("marking ...\n");
   for (int i = 0; i <= sp; i++){
-      if(inHeap((word*)s[i]) && (word*)s[i] != NIL){
+      if(inHeap((word*)s[i]) /* && (word*)s[i] != NIL */){
         Paint(((word*)s[i])[-1], Grey);
         mark((word*)s[i]);
       }
@@ -512,13 +512,15 @@ void sweepPhase() {
   // is no way to link them into the freelist.
   printf("sweeping ...\n");
   word* p = heap;
-  for(int i = 0; i< afterHeap; i++){
+  for(int i = 0; i < afterHeap; i++){
     if(Color(p[i]) == White){
-      Paint(p[0], Blue);
+      Paint(p[i], Blue);
       // add to freelist
+      p[1] = (word*)freelist;
+      freelist = p;
     }
     if(Color(p[i]) == Black){
-      Paint(p[0], White);
+      Paint(p[i], White);
     }
   }
   // for each block on the heap
