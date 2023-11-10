@@ -511,7 +511,16 @@ void sweepPhase() {
   // nor on the freelist, because they consist only of a block header, so there 
   // is no way to link them into the freelist.
   printf("sweeping ...\n");
-
+  word* p = heap;
+  for(int i = 0; i< afterHeap; i++){
+    if(Color(p[i]) == White){
+      Paint(p[0], Blue);
+      // add to freelist
+    }
+    if(Color(p[i]) == Black){
+      Paint(p[0], White);
+    }
+  }
   // for each block on the heap
   //    if white
   //        paint blue
