@@ -34,3 +34,8 @@ When an allocation fails after traversing the full length of the heap.
 
 ## 10.2
 
+The mark-and-sweep algorithm is implemented in listmachine.c on line 474 to 511.
+
+## 10.3
+
+Skipped.
