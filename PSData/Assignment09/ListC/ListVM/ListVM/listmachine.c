@@ -473,62 +473,41 @@ void initheap() {
 
 void mark(word* block){
   if(Color(block[0]) != Black){
-    Paint((block[0]), Black);
+    block[0] = Paint((block[0]), Black);
     for(int i = 1; i <= Length(block[0]); i++){
-      mark(&block[i]);
+      if(!IsInt (block[i])) {
+        mark((word *)block[i]);
+      }
     }
   }
-  // if block isn't already marked:
-  //    paint black
-  //    for each pointer q inside *block
-  //      mark *q
 }
 
 void markPhase(word s[], word sp) {
   printf("marking ...\n");
   for (int i = 0; i <= sp; i++){
-      if(inHeap((word*)s[i]) /* && (word*)s[i] != NIL */){
-        Paint(((word*)s[i])[-1], Grey);
+      if(!IsInt(s[i])){
         mark((word*)s[i]);
       }
-      else{
-        Paint(((word*)s[i])[-1], White);
-      }
   }
-
-  // call mark on each non-nil heap reference in the stack
-  // for each int in s
-  //    if inheap && not-nil: 
-  //        paint grey
-  //        mark(root)
-  //    else paint white
 }
 
 void sweepPhase() {
-  // should scan the entire heap, put white blocks on the freelist, and paint 
-  // black blocks white. It should ignore blue blocks; they are either already 
-  // on the freelist or they are orphan blocks which are neither used for data 
-  // nor on the freelist, because they consist only of a block header, so there 
-  // is no way to link them into the freelist.
   printf("sweeping ...\n");
   word* p = heap;
-  for(int i = 0; i < afterHeap; i++){
-    if(Color(p[i]) == White){
-      Paint(p[i], Blue);
-      // add to freelist
-      p[1] = (word*)freelist;
+
+  while (p < afterHeap) {
+    if(Color(p[0]) == White){
+      p[0] = Paint(p[0], Blue);
+      // ADD TO FREELIST
+      p[1] = freelist;
       freelist = p;
     }
-    if(Color(p[i]) == Black){
-      Paint(p[i], White);
+    if(Color(p[0]) == Black){
+      p[0] = Paint(p[0], White);
     }
+
+    p = p + Length(p[0]) + 1;
   }
-  // for each block on the heap
-  //    if white
-  //        paint blue
-  //        add to freelist
-  //    if black
-  //        paint white
 }
 
 void collect(word s[], word sp) {
