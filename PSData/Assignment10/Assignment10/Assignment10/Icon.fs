@@ -30,7 +30,8 @@
    | FromTo of int * int
    | Write of expr
    | If of expr * expr * expr
-   | Prim of string * expr * expr 
+   | Prim of string * expr * expr
+   | Prim1 of string * expr         // ADDED
    | And of expr * expr
    | Or  of expr * expr
    | Seq of expr * expr
@@ -88,6 +89,17 @@
                | _ -> Str "unknown prim2")
                econt1)
            econt
+     | Prim1(ope, e) ->                               // ADDED FROM HERE
+       eval e (fun v -> fun econt ->
+           match (ope, v) with
+           | ("sqr", Int i) -> cont (Int(i*i)) econt
+           | ("even", Int i) ->
+               if (i%2=0) then
+                  cont (Int i) econt
+               else
+                  econt ()
+           | _ -> Str "unknown prim")
+           econt                                      // TO HERE
      | And(e1, e2) -> 
        eval e1 (fun _ -> fun econt1 -> eval e2 cont econt1) econt
      | Or(e1, e2) -> 
